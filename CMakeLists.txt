@@ -21,5 +21,5 @@ include_directories( library/inc )
 file( GLOB LIBRARY_SOURCE_FILES lib/src/*.cpp )
 
 add_executable(${EXECUTABLE_NAME} driver/main.cpp ${LIBRARY_SOURCE_FILES})
-target_link_libraries(${EXECUTABLE_NAME} sfml-graphics sfml-audio)
+target_link_libraries(${EXECUTABLE_NAME}  sfml-graphics sfml-system sfml-window  sfml-audio  )
 
