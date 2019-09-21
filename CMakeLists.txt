@@ -17,9 +17,11 @@ find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 set(EXECUTABLE_NAME "tictactoe")
 
 include_directories( library/inc )
+include_directories( . )
+add_subdirectory(utilities)
 
 file( GLOB LIBRARY_SOURCE_FILES lib/src/*.cpp )
 
 add_executable(${EXECUTABLE_NAME} driver/main.cpp ${LIBRARY_SOURCE_FILES})
-target_link_libraries(${EXECUTABLE_NAME}  sfml-graphics sfml-system sfml-window  sfml-audio  )
+target_link_libraries(${EXECUTABLE_NAME} utilities  sfml-graphics sfml-system sfml-window  sfml-audio  )
 

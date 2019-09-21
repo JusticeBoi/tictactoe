@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include "utilities/inc/logging.hpp"
+#include "utilities/inc/functionessentials.hpp"
 
 enum Zone : int
 {
@@ -18,11 +20,11 @@ enum Zone : int
     OUT = 0
 };
 
-enum class XO: short
+enum XO: short
 {
-    X = 0,
+    X = -1,
     O = 1,
-    None = -1
+    None = 0
 };
 
 

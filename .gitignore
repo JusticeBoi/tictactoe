@@ -1,3 +1,4 @@
 *.ycm*
 build
 config.h
+tags

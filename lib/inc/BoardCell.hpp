@@ -23,10 +23,17 @@ class BoardCell : public sf::Drawable
         /* return 1 if fill succesful, meaning that the place was empty and now filled
          * if place was already full, no filling is done and false is returned*/
         bool fillZoneWith( Zone zone, XO xOrO );
-        XO hasWOn() const ;
+        //XO hasWOn() const ;
+        XO hasWonNew() const ;
+        static XO hasWon(const std::array<XO,9>& board) ;
+
+        std::array<XO,9>& getBoardRep();
+        const std::array<XO,9>& getBoardRep() const;
 
     private:
         std::array<Cell,9> board_;
+        std::array<XO,9> boardRep;
+        
         sf::Font font_;
 
 };

@@ -6,8 +6,18 @@
 
 int main()
 {
+
+    utilities::LogConfiguration::fancy = true;
+    utilities::LogConfiguration::catchSignals = false;
+    utilities::LogConfiguration::showLoopSummary = true;
+    utilities::LogConfiguration::showProgressbar = true;
+    utilities::LogConfiguration::showTimingSummary = false;
+    std::string TicTacToeHeader = utilities::LogConfiguration::getTicTactoe( );
+    utilities::log(TicTacToeHeader, utilities::LogLevels::ERROR );
+
     Game game;
-    game.start();
+    game.start(Game::Turn::Machine);
+    //game.startTwoPlayer();
 
     //float width = 800.f;
     //float height = 800.f;
