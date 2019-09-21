@@ -3,3 +3,5 @@ build
 config.h
 tags
 trial*
+SFML-2.5.1*
+TGUI-0.8.5*

@@ -80,7 +80,7 @@ unzip TGUI-0.8.5.zip
 cd TGUI-0.8.5
 mkdir build && cd build
 
-cmake ../ -DCMAKE_INSTALL_PREFIX:PATH=${current_dir}/TGUI-0.8.5-build && make -j${cores}
+cmake ../ -DCMAKE_INSTALL_PREFIX:PATH=${current_dir}/TGUI-0.8.5-build -DSFML_DIR:PATH=${current_dir}/SFML-2.5.1-build/lib/cmake/SFML && make -j${cores}
 make install    
 
 
