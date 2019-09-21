@@ -4,12 +4,12 @@ project(octree)
 
 #SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/usr/local/boost_1_66_0/include")
 #SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "/usr/local/boost_1_66_0/lib")
-SET(BOOST_ROOT "/usr/local/boost_1_66_0")
+#SET(BOOST_ROOT "/usr/local/boost_1_66_0")
 #SET(Boost_NO_SYSTEM_PATHS ON)
 #SET(BOOST_INCLUDEDIR "/usr/local/boost_1_66_0/include")
 #SET(BOOST_LIBRARYDIR "/usr/local/boost_1_66_0/lib")
 
-find_package(Boost 1.66.0 COMPONENTS filesystem system timer)
+find_package(Boost 1.58.0 COMPONENTS filesystem system timer)
 
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(checks/inc)
