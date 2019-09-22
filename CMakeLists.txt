@@ -7,7 +7,10 @@ set(tictactoe_VERSION_MAJOR 1)
 set(tictactoe_VERSION_MINOR 1)
 
 set (CMAKE_CXX_STANDARD 14)
-set (CMAKE_CXX_FLAGS "-march=native -fopenmp -Ofast -Wall -Wextra -Wno-unused-parameter -Wshadow -Wnon-virtual-dtor -g  ")
+set (CMAKE_CXX_FLAGS_DEBUG " -O0 -fopenmp -g ")
+set (CMAKE_CXX_FLAGS_RELEASE "-march=native -fopenmp -Ofast")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -Wno-unused-parameter -Wshadow -Wnon-virtual-dtor ")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ")
 set(CMAKE_PREFIX_PATH "${PROJECT_SOURCE_DIR}/SFML-2.5.1-build  ${CMAKE_PREFIX_PATH}")
 set(CMAKE_PREFIX_PATH "${PROJECT_SOURCE_DIR}/TGUI-0.8.5-build  ${CMAKE_PREFIX_PATH}")
 
@@ -25,7 +28,6 @@ find_package(TGUI 0.8  REQUIRED)
 
 set(EXECUTABLE_NAME "tictactoe")
 
-#include_directories( library/inc )
 include_directories( . )
 include_directories( TGUI-0.8.5-build/include )
 include_directories( lib/inc )

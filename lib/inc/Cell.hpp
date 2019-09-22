@@ -4,10 +4,11 @@
 //#include <SFML/Graphics.hpp>
 //#include <SFML/System.hpp>
 #include <TGUI/TGUI.hpp>
+#include <cstdint>
 #include "utilities/inc/logging.hpp"
 #include "utilities/inc/functionessentials.hpp"
 
-enum Zone : int
+enum Zone : uint_fast8_t
 {
     ONE = 1,
     TWO = 2,
@@ -21,7 +22,7 @@ enum Zone : int
     OUT = 0
 };
 
-enum XO: short
+enum XO: int_fast8_t
 {
     X = -1,
     O = 1,

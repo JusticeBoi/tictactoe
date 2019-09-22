@@ -9,6 +9,8 @@ class BoardCell : public sf::Drawable
 
     public:
         BoardCell();
+        BoardCell(const BoardCell&) = delete;
+        BoardCell(BoardCell&&) = delete;
 
         static constexpr float width = 2.f*800.f/3.f;
         static constexpr float height = 2.f*800.f/3.f;

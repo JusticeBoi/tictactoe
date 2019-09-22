@@ -7,7 +7,7 @@
 
 class Game
 {
-    enum class State: short
+    enum class State: uint_fast8_t
     {
         XWon = 0,
         OWon = 1,
@@ -25,12 +25,11 @@ class Game
         void start(Turn startingTurn);
         void startTwoPlayer();
         State isFinito() const;
-        int makeBestMove() ;
-        int minimax(std::array<XO,9>& board, XO player, int d);
+        int_fast8_t makeBestMove() ;
+        int_fast8_t minimax(std::array<XO,9>& board, XO player, int_fast8_t d);
     private:
         BoardCell bc_;
         Turn turn_;
-
 };
 
 #endif // GAME__HPP_DEFINED 

@@ -9,11 +9,11 @@ void Game::startTwoPlayer()
     FUNCTION_START;
     sf::RenderWindow w_(sf::VideoMode(800.f, 800.f), "Tic Tac Toe"); 
     turn_ = Turn::Human;
-    tgui::Gui gui{w_};
-    tgui::Button::Ptr button = tgui::Button::create();
-    tgui::EditBox::Ptr editBox = tgui::EditBox::create();
-    gui.add(button);
-    gui.add(editBox, "MyWidgetName");
+    //tgui::Gui gui{w_};
+    //tgui::Button::Ptr button = tgui::Button::create();
+    //tgui::EditBox::Ptr editBox = tgui::EditBox::create();
+    //gui.add(button);
+    //gui.add(editBox, "MyWidgetName");
 
 
 
@@ -23,7 +23,7 @@ void Game::startTwoPlayer()
         sf::Event event;
         while (w_.pollEvent(event))
         {
-           gui.handleEvent(event);
+           //gui.handleEvent(event);
            switch(event.type)
            {
                case sf::Event::Closed:
@@ -69,7 +69,7 @@ void Game::startTwoPlayer()
 
         }
         w_.clear();
-        gui.draw();
+        //gui.draw();
         w_.draw(bc_);
         w_.display();
     }
@@ -131,7 +131,7 @@ void Game::start(Turn startingTurn)
     FUNCTION_END;
 }
 
-int Game::minimax(std::array<XO,9>& board, XO player, int depth)
+int_fast8_t Game::minimax(std::array<XO,9>& board, XO player, int_fast8_t depth)
 {
     XO won = BoardCell::hasWon(board);
     if (won != XO::None )
@@ -140,15 +140,15 @@ int Game::minimax(std::array<XO,9>& board, XO player, int depth)
         //return won*player;
     }
 
-    int score = -11;
-    int move = -1;
+    int_fast8_t score = -11;
+    int_fast8_t move = -1;
     for(int i = 0 ; i < 9 ; ++i )
     {
         if( board[i] == XO::None )
         {
             board[i] = player;
             XO opponent = static_cast<XO>(-player);
-            int lastScore = -minimax(board, opponent, depth+1); 
+            int_fast8_t lastScore = -minimax(board, opponent, depth+1); 
             if ( lastScore > score )
             {
                 score = lastScore;
@@ -161,7 +161,7 @@ int Game::minimax(std::array<XO,9>& board, XO player, int depth)
     return score;
 }
 
-int Game::makeBestMove() 
+int_fast8_t Game::makeBestMove() 
 {
     std::array<XO,9>& board = bc_.getBoardRep();
     if ( std::all_of(board.begin(), board.end(), [](XO xo){return xo==XO::None;} ) )

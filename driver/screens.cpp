@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 	sf::RenderWindow App(sf::VideoMode(640, 480, 32), "SFML Demo 3");
 
 	//Mouse cursor no more visible
-	App.setMouseCursorVisible(false);
+	//App.setMouseCursorVisible(false);
 
 	//Screens preparations
 	screen_0 s0;
