@@ -9,6 +9,13 @@ void Game::startTwoPlayer()
     FUNCTION_START;
     sf::RenderWindow w_(sf::VideoMode(800.f, 800.f), "Tic Tac Toe"); 
     turn_ = Turn::Human;
+    tgui::Gui gui{w_};
+    tgui::Button::Ptr button = tgui::Button::create();
+    tgui::EditBox::Ptr editBox = tgui::EditBox::create();
+    gui.add(button);
+    gui.add(editBox, "MyWidgetName");
+
+
 
 
     while (w_.isOpen())
@@ -16,6 +23,7 @@ void Game::startTwoPlayer()
         sf::Event event;
         while (w_.pollEvent(event))
         {
+           gui.handleEvent(event);
            switch(event.type)
            {
                case sf::Event::Closed:
@@ -60,8 +68,8 @@ void Game::startTwoPlayer()
            }
 
         }
-
         w_.clear();
+        gui.draw();
         w_.draw(bc_);
         w_.display();
     }

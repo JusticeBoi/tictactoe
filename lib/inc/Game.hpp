@@ -2,7 +2,6 @@
 #define GAME__HPP_DEFINED
 
 #include "BoardCell.hpp"
-#include <SFML/Graphics.hpp>
 #include <iostream>
 
 

@@ -1,8 +1,6 @@
 #ifndef BOARD__CELL__HPP_DEFINED
 #define BOARD__CELL__HPP_DEFINED
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 #include <array>
 #include "Cell.hpp"
 

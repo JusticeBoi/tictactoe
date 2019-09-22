@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include <iostream>
 //#include "../lib/inc/Board.hpp"
 //#include "../lib/inc/BoardCell.hpp"
@@ -16,7 +15,7 @@ int main()
     utilities::log(TicTacToeHeader, utilities::LogLevels::ERROR );
 
     Game game;
-    game.start(Game::Turn::Machine);
+    game.startTwoPlayer();
     //game.startTwoPlayer();
 
     //float width = 800.f;
