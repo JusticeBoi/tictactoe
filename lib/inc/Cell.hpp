@@ -1,9 +1,9 @@
 #ifndef CELL__HPP_DEFINED
 #define CELL__HPP_DEFINED
 
-//#include <SFML/Graphics.hpp>
 //#include <SFML/System.hpp>
-#include <TGUI/TGUI.hpp>
+//#include <TGUI/TGUI.hpp>
+#include <SFML/Graphics.hpp>
 #include <cstdint>
 #include "utilities/inc/logging.hpp"
 #include "utilities/inc/functionessentials.hpp"

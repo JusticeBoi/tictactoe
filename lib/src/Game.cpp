@@ -3,43 +3,26 @@
 
 
 
-
 void Game::startTwoPlayer()
 {
     FUNCTION_START;
     sf::RenderWindow w_(sf::VideoMode(800.f, 800.f), "Tic Tac Toe"); 
     turn_ = Turn::Human;
-    //tgui::Gui gui{w_};
-    //tgui::Button::Ptr button = tgui::Button::create();
-    //tgui::EditBox::Ptr editBox = tgui::EditBox::create();
-    //gui.add(button);
-    //gui.add(editBox, "MyWidgetName");
-
-
-
 
     while (w_.isOpen())
     {
         sf::Event event;
         while (w_.pollEvent(event))
         {
-           //gui.handleEvent(event);
            switch(event.type)
            {
                case sf::Event::Closed:
                    w_.close();
                    break;
                case sf::Event::MouseButtonPressed:
-                   //if (event.mouseButton.button == sf::Mouse::Right)
-                   //{
-                   //}
                    if (event.mouseButton.button == sf::Mouse::Left)
                    {
-                       //std::cout << "mouse x: " << event.mouseButton.x << std::endl;
-                       //std::cout << "mouse y: " << event.mouseButton.y << std::endl;
                        sf::Vector2f mapped = w_.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-                       //std::cout << "mapped x: " << mapped.x << std::endl;
-                       //std::cout << "mapped y: " << mapped.y << std::endl;
                        Zone clickedZone = bc_.clickedZone(mapped);
                        if ( clickedZone != Zone::OUT )
                        {
@@ -69,7 +52,6 @@ void Game::startTwoPlayer()
 
         }
         w_.clear();
-        //gui.draw();
         w_.draw(bc_);
         w_.display();
     }
@@ -190,6 +172,37 @@ int_fast8_t Game::makeBestMove()
     std::cout << "zone : " << z <<'\n';
     return bc_.fillZoneWith(z, XO::O);
 
+}
+void Game::run()
+{
+    FUNCTION_START;
+    sf::RenderWindow App(sf::VideoMode(800.f, 800.f), "Tic Tac Toe"); 
+
+    int screen = 0;
+	std::vector<cScreen*> Screens;
+	MenuScreen s0;
+	Screens.push_back(&s0);
+    TwoPlayerScreen twoPlayer(*this);
+    Screens.push_back(&twoPlayer);
+    VsAiScreen vsAi(*this);
+    Screens.push_back(&vsAi);
+
+	while (screen >= 0)
+	{
+		screen = Screens[screen]->Run(App);
+	}
+
+    FUNCTION_END;
+
+
+}
+BoardCell& Game::getBoardCell()
+{
+    return bc_;
+}
+Game::Turn& Game::getTurn()
+{
+    return turn_;
 }
 
 Game::State Game::isFinito() const 

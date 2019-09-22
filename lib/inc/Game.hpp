@@ -1,20 +1,21 @@
 #ifndef GAME__HPP_DEFINED
 #define GAME__HPP_DEFINED
 
+#include "../inc/screens.hpp"
 #include "BoardCell.hpp"
 #include <iostream>
 
 
 class Game
 {
-    enum class State: uint_fast8_t
-    {
-        XWon = 0,
-        OWon = 1,
-        NotFinished = 2,
-        Draw = 3
-    };
     public:
+        enum class State: uint_fast8_t
+        {
+            XWon = 0,
+            OWon = 1,
+            NotFinished = 2,
+            Draw = 3
+        };
         enum class Turn : bool
         {
             Human = true,
@@ -26,8 +27,11 @@ class Game
         void startTwoPlayer();
         State isFinito() const;
         int_fast8_t makeBestMove() ;
-        int_fast8_t minimax(std::array<XO,9>& board, XO player, int_fast8_t d);
+        void run();
+        BoardCell& getBoardCell();
+        Turn& getTurn();
     private:
+        int_fast8_t minimax(std::array<XO,9>& board, XO player, int_fast8_t d);
         BoardCell bc_;
         Turn turn_;
 };

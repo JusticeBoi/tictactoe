@@ -1,4 +1,5 @@
 #include <iostream>
+#include <variant>
 #include <SFML/Graphics.hpp>
 #include "screens.hpp"
 
@@ -15,7 +16,7 @@ int main(int argc, char** argv)
 	//App.setMouseCursorVisible(false);
 
 	//Screens preparations
-	screen_0 s0;
+	MenuScreen s0;
 	Screens.push_back(&s0);
 	screen_1 s1;
 	Screens.push_back(&s1);
@@ -25,6 +26,8 @@ int main(int argc, char** argv)
 	{
 		screen = Screens[screen]->Run(App);
 	}
+
+
 
 	return EXIT_SUCCESS;
 }

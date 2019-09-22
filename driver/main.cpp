@@ -15,7 +15,8 @@ int main()
     utilities::log(TicTacToeHeader, utilities::LogLevels::ERROR );
 
     Game game;
-    game.start(Game::Turn::Human);
+    //game.start(Game::Turn::Human);
+    game.run();
     //game.startTwoPlayer();
 
     //float width = 800.f;
