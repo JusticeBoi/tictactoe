@@ -11,8 +11,6 @@ int MenuScreen::Run(sf::RenderWindow &App)
 {
 	sf::Event Event;
 	bool Running = true;
-	sf::Texture Texture;
-	sf::Sprite Sprite;
 	int alpha = 0;
 	sf::Font Font;
 	sf::Text PlayTwoPlayer;
@@ -21,13 +19,12 @@ int MenuScreen::Run(sf::RenderWindow &App)
 	sf::Text Continue;
 	int menu = 0;
 
-	if (!Texture.loadFromFile("../themes/spiral.jpg"))
+	if (!loadFromFile("../themes/spiral.jpg"))
 	{
 		std::cerr << "Error loading presentation.gif" << std::endl;
 		return (-1);
 	}
-	Sprite.setTexture(Texture);
-	Sprite.setColor(sf::Color(255, 255, 255, alpha));
+	sprite.setColor(sf::Color(255, 255, 255, alpha));
 	if (!Font.loadFromFile("../fonts/Inconsolata.ttf"))
 	{
 		std::cerr << "Error loading Inconsolata.ttf" << std::endl;
@@ -36,23 +33,23 @@ int MenuScreen::Run(sf::RenderWindow &App)
 	PlayTwoPlayer.setFont(Font);
 	PlayTwoPlayer.setCharacterSize(40);
 	PlayTwoPlayer.setString("Human vs Human");
-	PlayTwoPlayer.setPosition({ 250.f, 230.f });
+	PlayTwoPlayer.setPosition({ 250.f, 270.f });
 
 	PlayVsAI.setFont(Font);
 	PlayVsAI.setCharacterSize(40);
 	PlayVsAI.setString("Human vs Computer");
-	PlayVsAI.setPosition({ 250.f, 290.f });
+	PlayVsAI.setPosition({ 250.f, 330.f });
 
 
 	Exit.setFont(Font);
 	Exit.setCharacterSize(40);
 	Exit.setString("Exit");
-	Exit.setPosition({ 250.f, 350.f });
+	Exit.setPosition({ 250.f, 390.f });
 
 	Continue.setFont(Font);
 	Continue.setCharacterSize(40);
 	Continue.setString("Continue");
-	Continue.setPosition({ 250.f, 230.f });
+	Continue.setPosition({ 250.f, 270.f });
     Hover hover  = Hover::OUT; 
 
 	if (playing != NowPlaying::NOTHING)
@@ -131,7 +128,7 @@ int MenuScreen::Run(sf::RenderWindow &App)
 		{
 			++alpha;
 		}
-		Sprite.setColor(sf::Color(255, 255, 255, alpha / alpha_div));
+		sprite.setColor(sf::Color(255, 255, 255, alpha / alpha_div));
         switch ( hover )
         {
             case Hover::EXIT:
@@ -178,7 +175,7 @@ int MenuScreen::Run(sf::RenderWindow &App)
 		//Clearing screen
 		App.clear();
 		//Drawing
-		App.draw(Sprite);
+		App.draw(sprite);
 		if (alpha == alpha_max)
 		{
 			if (playing)

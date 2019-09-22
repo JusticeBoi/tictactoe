@@ -13,6 +13,8 @@ class TwoPlayerScreen : public cScreen
     	virtual int Run(sf::RenderWindow &App);
     private:
         Game* game_;
+	    int alpha_max;
+	    int alpha_div;
 
 };
 #endif

@@ -8,6 +8,7 @@ class BoardCell : public sf::Drawable
 {
 
     public:
+        using threeInt = std::tuple<int,int,int>;
         BoardCell();
         BoardCell(const BoardCell&) = delete;
         BoardCell(BoardCell&&) = delete;
@@ -25,15 +26,22 @@ class BoardCell : public sf::Drawable
         bool fillZoneWith( Zone zone, XO xOrO );
         //XO hasWOn() const ;
         XO hasWonNew() const ;
-        static XO hasWon(const std::array<XO,9>& board) ;
+        static std::pair<XO, threeInt> hasWon(const std::array<XO,9>& board) ;
 
         std::array<XO,9>& getBoardRep();
         const std::array<XO,9>& getBoardRep() const;
 
+        void setOutlineColor(const sf::Color& c);
+
+        void drawWinningLine(const threeInt& zt);
+        //static constexpr Zone winningCombination[8][3] = { {ONE, TWO, THREE}, {FOUR, FIVE, SIX}, {SEVEN, EIGHT, NINE},
+        //                                                   {ONE, FOUR, SEVEN}, {TWO, FIVE, EIGHT}, {THREE, SIX, NINE},
+        //                                                   {ONE, FIVE, NINE}, {THREE, FIVE, SEVEN} };
+
+        sf::RectangleShape winningLine_;
     private:
         std::array<Cell,9> board_;
-        std::array<XO,9> boardRep;
-        
+        std::array<XO,9> boardRep_;
         sf::Font font_;
 
 };

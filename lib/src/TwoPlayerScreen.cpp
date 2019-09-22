@@ -1,15 +1,26 @@
 #include "../inc/TwoPlayerScreen.hpp"
 #include "Game.hpp"
 
-TwoPlayerScreen::TwoPlayerScreen( Game& g  ): game_(&g){};
+TwoPlayerScreen::TwoPlayerScreen( Game& g  ): game_(&g)
+{
+
+	alpha_max = 6 * 255;
+	alpha_div = 6;
+};
 int TwoPlayerScreen::Run(sf::RenderWindow& App)
 {
     using Turn = Game::Turn;
     using State = Game::State;
+
     sf::Event event;
+	int alpha = 0;
+    int allpha_tmp = 0;
+
     bool Running = true;
     BoardCell& boardCell = game_->getBoardCell();
+	boardCell.setOutlineColor(sf::Color(255, 255, 255, alpha));
     Game::Turn& turn = game_->getTurn();
+    Game::State s = Game::State::NotFinished;
     while ( Running )
     {
         while (App.pollEvent(event))
@@ -35,14 +46,12 @@ int TwoPlayerScreen::Run(sf::RenderWindow& App)
 
                               if (boardCell.fillZoneWith(clickedZone, XO::O )) turn = Turn::Human;
                             }
-                            State s = game_->isFinito();
+                            s = game_->isFinito();
                             if ( s != Game::State::NotFinished)
                             {
                                 std::string win_msg = ( s == State::XWon ) ? "X won " : "O won";
                                 std::cout << win_msg <<'\n';
                                 Running = false;
-                                //return 1;
-                                //App.close();
                             }
                         }
 
@@ -59,14 +68,32 @@ int TwoPlayerScreen::Run(sf::RenderWindow& App)
                     }
             }
         }
+		if (alpha<alpha_max)
+		{
+			++alpha;
+		}
+        allpha_tmp = alpha / alpha_div;
+		boardCell.setOutlineColor(sf::Color(255, 255, 255, allpha_tmp));
         App.clear();
         App.draw(boardCell);
+        //if ( s == Game::State::XWon || s == Game::State::OWon )
+        //{
+        //    game_->drawWinningLine(App);
+        //}
         App.display();
     }
     sf::Clock c;
-    while(c.getElapsedTime().asSeconds() < 2.0f )
+    while(c.getElapsedTime().asSeconds() < 1.5f )
     {
-        App.display();
+        while ( alpha != 0)
+		{
+			--alpha;
+            allpha_tmp = alpha / alpha_div;
+            App.clear();
+		    boardCell.setOutlineColor(sf::Color(255, 255, 255, allpha_tmp));
+            App.draw(boardCell);
+            App.display();
+		}
     }
 	return -1;
 }

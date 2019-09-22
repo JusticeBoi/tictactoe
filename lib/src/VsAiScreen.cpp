@@ -1,15 +1,22 @@
 #include "../inc/VsAiScreen.hpp"
 #include "Game.hpp"
 
-VsAiScreen::VsAiScreen( Game& g  ): game_(&g){};
+VsAiScreen::VsAiScreen( Game& g  ): game_(&g){
+	alpha_max = 3 * 255;
+	alpha_div = 3;
+};
+
 int VsAiScreen::Run(sf::RenderWindow& App)
 {
     using Turn = Game::Turn;
     using State = Game::State;
+	int alpha = 0;
+    int allpha_tmp = 0;
     sf::Event event;
     bool Running = true;
     BoardCell& boardCell = game_->getBoardCell();
     Game::Turn& turn = game_->getTurn();
+
     while ( Running )
     {
         while (App.pollEvent(event))
@@ -58,14 +65,28 @@ int VsAiScreen::Run(sf::RenderWindow& App)
             }
             Running = false;
         }
+		if (alpha<alpha_max)
+		{
+			++alpha;
+		}
+        allpha_tmp = alpha / alpha_div;
+		boardCell.setOutlineColor(sf::Color(255, 255, 255, allpha_tmp));
         App.clear();
         App.draw(boardCell);
         App.display();
     }
     sf::Clock c;
-    while(c.getElapsedTime().asSeconds() < 2.0f )
+    while(c.getElapsedTime().asSeconds() < 1.5f )
     {
-        App.display();
+        while ( alpha != 0)
+		{
+			--alpha;
+            allpha_tmp = alpha / alpha_div;
+		    boardCell.setOutlineColor(sf::Color(255, 255, 255, allpha_tmp));
+            App.clear();
+            App.draw(boardCell);
+            App.display();
+		}
     }
     return -1;
 }

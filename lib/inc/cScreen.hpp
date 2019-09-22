@@ -12,6 +12,12 @@ public :
         PVSAI = 2
     };
     virtual int Run (sf::RenderWindow &App) = 0;
+    virtual int loadFromFile (const std::string& str) ; 
+protected:
+    
+    sf::Texture texture;
+	sf::Sprite sprite;
+    
 };
 
 #endif

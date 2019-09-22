@@ -25,11 +25,13 @@ class Game
         ~Game() = default;
         void start(Turn startingTurn);
         void startTwoPlayer();
-        State isFinito() const;
+        State isFinito() ;
         int_fast8_t makeBestMove() ;
         void run();
         BoardCell& getBoardCell();
         Turn& getTurn();
+        void drawWinningLine(sf::RenderWindow& rw);
+
     private:
         int_fast8_t minimax(std::array<XO,9>& board, XO player, int_fast8_t d);
         BoardCell bc_;

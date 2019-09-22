@@ -55,6 +55,7 @@ class Cell : public sf::Drawable
         const sf::Vector2f& getPosition( ) const;
         void setFont(const sf::Font& sf);
         void setZone(Zone z);
+        void setOutlineColor(const sf::Color& c);
         Zone getZone() const;
         XO getXO() const;
 

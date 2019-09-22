@@ -115,10 +115,10 @@ void Game::start(Turn startingTurn)
 
 int_fast8_t Game::minimax(std::array<XO,9>& board, XO player, int_fast8_t depth)
 {
-    XO won = BoardCell::hasWon(board);
-    if (won != XO::None )
+    auto won = BoardCell::hasWon(board);
+    if (won.first != XO::None )
     {
-        return (10-depth)*(won*player);
+        return (10-depth)*(won.first*player);
         //return won*player;
     }
 
@@ -204,13 +204,44 @@ Game::Turn& Game::getTurn()
 {
     return turn_;
 }
+//void Game::drawWinningLine(sf::RenderWindow& rw)
+//{
+//    static bool winningLineFirstTime = false;
+//    static sf::Clock c;
+//    //if ( bc_.winningLine_.getSize() != sf::Vector2f{0,0} )
+//    //{
+//        if (!winningLineFirstTime)
+//        {
+//            int alpha = 0; 
+//            int alpha_max = 5*255;  
+//            int alpha_div = 5;
+//            while(c.getElapsedTime().asSeconds() < 1.8f )
+//            {
+//                while ( alpha < alpha_max)
+//	        	{
+//                    ++alpha;
+//                    rw.clear();
+//                    bc_.winningLine_.setFillColor(sf::Color(255, 255, 255, alpha/alpha_div));
+//                    rw.draw(bc_.winningLine_);
+//                    rw.draw(bc_);
+//                    rw.display();
+//                }
+//            }
+//            winningLineFirstTime = true;
+//        }
+//    //}
+//}
 
-Game::State Game::isFinito() const 
+Game::State Game::isFinito() 
 {
     //XO won = bc_.hasWOn();
     const std::array<XO,9>& board = bc_.getBoardRep();
-    XO won = BoardCell::hasWon(board);
-    if ( won != XO::None ) return ( won == XO::X ) ? Game::State::XWon : Game::State::OWon;  
+    auto won = BoardCell::hasWon(board);
+    if ( won.first != XO::None )
+    {
+        bc_.drawWinningLine(won.second);
+        return ( won.first == XO::X ) ? Game::State::XWon : Game::State::OWon;  
+    }
     else
     {
         return (std::any_of(board.begin(), board.end(),[](XO xo){return xo == XO::None;})) ? Game::State::NotFinished : Game::State::Draw;
