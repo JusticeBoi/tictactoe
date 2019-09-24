@@ -7,8 +7,8 @@
 //#include <windows.h>
 //int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpszArgument, int nCmdShow)
 //#else
-int main()
 //#endif
+int main()
 {
     #ifdef WITH_FUNCTION_UTILITIES
         utilities::LogConfiguration::fancy = true;
