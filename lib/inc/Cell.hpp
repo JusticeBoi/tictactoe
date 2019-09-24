@@ -5,8 +5,10 @@
 //#include <TGUI/TGUI.hpp>
 #include <SFML/Graphics.hpp>
 #include <cstdint>
-#include "utilities/inc/logging.hpp"
-#include "utilities/inc/functionessentials.hpp"
+#ifdef WITH_FUNCTION_UTILITIES
+    #include "utilities/inc/logging.hpp"
+    #include "utilities/inc/functionessentials.hpp"
+#endif
 #include "config.h"
 
 enum Zone : uint_fast8_t
