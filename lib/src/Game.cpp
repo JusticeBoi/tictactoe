@@ -5,7 +5,9 @@
 
 void Game::startTwoPlayer()
 {
+    #ifdef WITH_FUNCTION_UTILITIES
     FUNCTION_START;
+    #endif
     sf::RenderWindow w_(sf::VideoMode(800.f, 800.f), "Tic Tac Toe"); 
     turn_ = Turn::Human;
 
@@ -55,12 +57,16 @@ void Game::startTwoPlayer()
         w_.draw(bc_);
         w_.display();
     }
+    #ifdef WITH_FUNCTION_UTILITIES
     FUNCTION_END;
+    #endif
 }
 
 void Game::start(Turn startingTurn)
 {
+    #ifdef WITH_FUNCTION_UTILITIES
     FUNCTION_START;
+    #endif
     sf::RenderWindow w_(sf::VideoMode(800.f, 800.f), "Tic Tac Toe"); 
     turn_ = startingTurn;
 
@@ -110,7 +116,9 @@ void Game::start(Turn startingTurn)
         w_.draw(bc_);
         w_.display();
     }
+    #ifdef WITH_FUNCTION_UTILITIES
     FUNCTION_END;
+    #endif
 }
 
 int_fast8_t Game::minimax(std::array<XO,9>& board, XO player, int_fast8_t depth)
@@ -160,7 +168,7 @@ int_fast8_t Game::makeBestMove()
       {
         board[i] = XO::O;
         int tmpScore = -minimax(board, XO::X, 0);
-        std::cout <<" i : " << i << " tmpScore : " << tmpScore <<'\n'; 
+        //std::cout <<" i : " << i << " tmpScore : " << tmpScore <<'\n'; 
         board[i] = XO::None;
         if(tmpScore > score) 
         {
@@ -169,13 +177,15 @@ int_fast8_t Game::makeBestMove()
         }
       }
     }
-    std::cout << "zone : " << z <<'\n';
+    //std::cout << "zone : " << z <<'\n';
     return bc_.fillZoneWith(z, XO::O);
 
 }
 void Game::run()
 {
+    #ifdef WITH_FUNCTION_UTILITIES
     FUNCTION_START;
+    #endif
     sf::RenderWindow App(sf::VideoMode(800.f, 800.f), "Tic Tac Toe"); 
 
     int screen = 0;
@@ -192,7 +202,9 @@ void Game::run()
 		screen = Screens[screen]->Run(App);
 	}
 
+    #ifdef WITH_FUNCTION_UTILITIES
     FUNCTION_END;
+    #endif
 
 
 }

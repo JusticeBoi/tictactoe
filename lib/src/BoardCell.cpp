@@ -23,7 +23,7 @@ BoardCell::BoardCell()
         static int i = 1;
         static int j = 1;
         Cell c; 
-        std::cout <<"i : "<< i << " j : " << j<<'\n';
+        //std::cout <<"i : "<< i << " j : " << j<<'\n';
         c.setFont(font_);
         c.setPosition(offset + ((i-1)*Cell::width), offset + ((j-1)*Cell::height));
         c.setZone( static_cast<Zone>(3*(j-1) + i));
@@ -88,11 +88,15 @@ bool BoardCell::fillZoneWith( Zone zone, XO xOrO )
 }
 Zone BoardCell::clickedZone(const sf::Vector2f& v) const
 {
+    #ifdef WITH_FUNCTION_UTILITIES
     SCOPED_FUNCTION_START;
+    #endif
     auto f = std::find_if(board_.cbegin(), board_.cend(), [&v]( const Cell& c){ return c.contains(v);}); 
 
     return ( f != board_.cend() ) ? f->getZone() : Zone::OUT;
+    #ifdef WITH_FUNCTION_UTILITIES
     SCOPED_FUNCTION_END;
+    #endif
 }
 std::array<XO,9>& BoardCell::getBoardRep()
 {
@@ -104,7 +108,9 @@ const std::array<XO,9>& BoardCell::getBoardRep() const
 }
 XO BoardCell::hasWonNew() const
 {
+    #ifdef WITH_FUNCTION_UTILITIES
     SCOPED_FUNCTION_START;
+    #endif
     static unsigned wins[8][3] = {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
     int i;
     for(i = 0; i < 8; ++i) {
@@ -114,7 +120,9 @@ XO BoardCell::hasWonNew() const
             return boardRep_[wins[i][2]];
     }
     return XO::None;
+    #ifdef WITH_FUNCTION_UTILITIES
     SCOPED_FUNCTION_END;
+    #endif
 }
 
 void BoardCell::drawWinningLine( const threeInt& tup )

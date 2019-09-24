@@ -7,6 +7,7 @@
 #include <cstdint>
 #include "utilities/inc/logging.hpp"
 #include "utilities/inc/functionessentials.hpp"
+#include "config.h"
 
 enum Zone : uint_fast8_t
 {

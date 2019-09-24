@@ -4,7 +4,6 @@
 #include "utilities/inc/logging.hpp"
 #include "utilities/inc/functionessentials.hpp"
 
-
 Cell::Cell()
 {
     xo_ = XO::None;

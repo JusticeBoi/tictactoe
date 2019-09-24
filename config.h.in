@@ -1,2 +1,2 @@
-#define tictactoe_VERSION_MAJOR @tictactoe_VERSION_MAJOR@
-#define tictactoe_VERSION_MINOR @tictactoe_VERSION_MINOR@
+#define TICTACTOE_VERSION_MAJOR @tictactoe_VERSION_MAJOR@
+#define TICTACTOE_VERSION_MINOR @tictactoe_VERSION_MINOR@
