@@ -3,7 +3,11 @@
 //#include "../lib/inc/BoardCell.hpp"
 #include "../lib/inc/Game.hpp"
 
+#ifdef TICTACTOE_WIN_32
+int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpszArgument, int nCmdShow)
+#else
 int main()
+#endif
 {
     #ifdef WITH_FUNCTION_UTILITIES
         utilities::LogConfiguration::fancy = true;
