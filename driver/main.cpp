@@ -4,6 +4,7 @@
 #include "../lib/inc/Game.hpp"
 
 #ifdef TICTACTOE_WIN_32
+#include <windows.h>
 int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpszArgument, int nCmdShow)
 #else
 int main()
