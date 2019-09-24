@@ -63,6 +63,7 @@ endif()
 
 file( GLOB LIBRARY_SOURCE_FILES lib/src/*.cpp )
 file( GLOB LIBRARY_HEADER_FILES lib/inc/*.hpp )
+
 add_library(tictactoelib SHARED ${LIBRARY_SOURCE_FILES} ${LIBRARY_HEADER_FILES} )
 target_link_libraries(tictactoelib sfml-graphics  sfml-window  sfml-audio )
 
@@ -75,5 +76,9 @@ target_link_libraries(screens tictactoelib  )
 if(TICTACTOE_ENABLE_FUNCTION_UTILITIES)
     target_link_libraries(${EXECUTABLE_NAME} utilities )
     target_link_libraries(screens utilities )
+endif()
+
+if(WIN32)
+    target_link_libraries(${EXECUTABLE_NAME} sfml-main )
 endif()
 
