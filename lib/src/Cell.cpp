@@ -1,8 +1,6 @@
 #include "../inc/Cell.hpp"
 #include <iostream>
 #include <string>
-#include "utilities/inc/logging.hpp"
-#include "utilities/inc/functionessentials.hpp"
 
 Cell::Cell()
 {
