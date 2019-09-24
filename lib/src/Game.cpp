@@ -2,7 +2,7 @@
 #include <random>
 
 
-
+bool Game::finished = false;
 void Game::startTwoPlayer()
 {
     #ifdef WITH_FUNCTION_UTILITIES
@@ -156,9 +156,10 @@ int_fast8_t Game::makeBestMove()
     std::array<XO,9>& board = bc_.getBoardRep();
     if ( std::all_of(board.begin(), board.end(), [](XO xo){return xo==XO::None;} ) )
     {
-        std::random_device rd;
+        //std::random_device rd;
+        std::mt19937 mt(time(NULL));
         std::uniform_int_distribution<int> dist(1, 9);
-        return bc_.fillZoneWith(static_cast<Zone>(dist(rd)), XO::O);
+        return bc_.fillZoneWith(static_cast<Zone>(dist(mt)), XO::O);
     }
     int score = -10;
     Zone z = Zone::OUT;
@@ -189,7 +190,9 @@ void Game::run()
     sf::RenderWindow App(sf::VideoMode(800.f, 800.f), "Tic Tac Toe"); 
 
     int screen = 0;
+    int old_screen = 0;
 	std::vector<cScreen*> Screens;
+
 	MenuScreen s0;
 	Screens.push_back(&s0);
     TwoPlayerScreen twoPlayer(*this);
@@ -199,7 +202,16 @@ void Game::run()
 
 	while (screen >= 0)
 	{
+        old_screen = screen;
 		screen = Screens[screen]->Run(App);
+        if ( finished ) 
+        {
+            std::cout <<"finished" <<'\n';
+            bc_.cleanUpForNextRound();
+            turn_ = Turn::Machine;
+            std::for_each(Screens.begin(), Screens.end(), [](cScreen* scr ){scr->init();});
+            finished = false;
+        }
 	}
 
     #ifdef WITH_FUNCTION_UTILITIES

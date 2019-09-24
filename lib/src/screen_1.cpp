@@ -1,6 +1,6 @@
 #include "../inc/screen_1.hpp"
 
-screen_1::screen_1()
+void screen_1::init()
 {
 	movement_step = 5;
 	posx = 320;
@@ -8,6 +8,10 @@ screen_1::screen_1()
 	//Setting sprite
 	Rectangle.setFillColor(sf::Color(255, 255, 255, 150));
 	Rectangle.setSize({ 10.f, 10.f });
+}
+screen_1::screen_1()
+{
+    init();
 }
 int screen_1::Run(sf::RenderWindow &App)
 {

@@ -13,8 +13,6 @@ private:
 
 	int alpha_max;
 	int alpha_div;
-    NowPlaying playing;
-    NowPlaying wasPlaying;
     enum class Hover : uint8_t
     {
         EXIT = 0,
@@ -24,7 +22,10 @@ private:
         OUT = 4
     };
 public:
+    void init() override;
 	MenuScreen();
+    NowPlaying playing;
+    NowPlaying wasPlaying;
 	virtual int Run(sf::RenderWindow &App);
 };
 #endif

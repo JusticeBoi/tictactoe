@@ -11,6 +11,7 @@ class TwoPlayerScreen : public cScreen
     public:
     	TwoPlayerScreen(Game& game); 
     	virtual int Run(sf::RenderWindow &App);
+        void init() override;
     private:
         Game* game_;
 	    int alpha_max;

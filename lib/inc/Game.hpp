@@ -31,6 +31,7 @@ class Game
         BoardCell& getBoardCell();
         Turn& getTurn();
         void drawWinningLine(sf::RenderWindow& rw);
+        static bool finished;
 
     private:
         int_fast8_t minimax(std::array<XO,9>& board, XO player, int_fast8_t d);

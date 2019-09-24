@@ -7,9 +7,7 @@
 
 
 
-
-
-BoardCell::BoardCell()
+void BoardCell::init()
 {
     //auto font = std::make_shared<sf::Font>();
     if (!font_.loadFromFile("../fonts/GlacialIndifference.otf"))
@@ -17,11 +15,13 @@ BoardCell::BoardCell()
         throw std::runtime_error("couldnt load font");
         // error...
     }
+    static int i = 1;
+    static int j = 1;
 
     auto gen = [this]()
     {
-        static int i = 1;
-        static int j = 1;
+        //static int i = 1;
+        //static int j = 1;
         Cell c; 
         //std::cout <<"i : "<< i << " j : " << j<<'\n';
         c.setFont(font_);
@@ -33,8 +33,15 @@ BoardCell::BoardCell()
     };
     std::generate(board_.begin(), board_.end(), gen);
     std::fill(boardRep_.begin(), boardRep_.end(), XO::None);
+    winningLine_ = sf::RectangleShape();
     winningLine_.setOutlineColor(sf::Color::White);
 
+    i = 1;
+    j = 1;
+}
+BoardCell::BoardCell()
+{
+    init();
 }
 
 void BoardCell::draw(sf::RenderTarget& target, sf::RenderStates /*states*/) const
@@ -164,4 +171,9 @@ std::pair<XO, BoardCell::threeInt> BoardCell::hasWon(const std::array<XO,9>& boa
     }
     auto max = std::numeric_limits<int>::max();
     return std::make_pair(XO::None, threeInt{max, max, max});
+}
+
+void BoardCell::cleanUpForNextRound()
+{
+    init();
 }

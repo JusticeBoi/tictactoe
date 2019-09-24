@@ -13,7 +13,8 @@ public :
     };
     virtual int Run (sf::RenderWindow &App) = 0;
     virtual int loadFromFile (const std::string& str) ; 
-    bool running_;
+    bool finished_;
+    virtual void init() = 0;
 protected:
     
     sf::Texture texture;

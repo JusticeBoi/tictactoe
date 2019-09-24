@@ -15,6 +15,7 @@ private:
 public:
 	screen_1();
 	virtual int Run(sf::RenderWindow &App);
+    virtual void init() override;
 };
 
 #endif

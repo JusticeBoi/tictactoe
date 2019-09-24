@@ -39,7 +39,10 @@ class BoardCell : public sf::Drawable
         //                                                   {ONE, FIVE, NINE}, {THREE, FIVE, SEVEN} };
 
         sf::RectangleShape winningLine_;
+
+        void cleanUpForNextRound();
     private:
+        void init();
         std::array<Cell,9> board_;
         std::array<XO,9> boardRep_;
         sf::Font font_;

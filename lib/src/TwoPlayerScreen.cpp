@@ -1,11 +1,14 @@
 #include "../inc/TwoPlayerScreen.hpp"
 #include "Game.hpp"
 
-TwoPlayerScreen::TwoPlayerScreen( Game& g  ): game_(&g)
+void TwoPlayerScreen::init()
 {
-
 	alpha_max = 6 * 255;
 	alpha_div = 6;
+}
+TwoPlayerScreen::TwoPlayerScreen( Game& g  ): game_(&g)
+{
+    init();
 };
 int TwoPlayerScreen::Run(sf::RenderWindow& App)
 {
@@ -49,9 +52,28 @@ int TwoPlayerScreen::Run(sf::RenderWindow& App)
                             s = game_->isFinito();
                             if ( s != Game::State::NotFinished)
                             {
-                                std::string win_msg = ( s == State::XWon ) ? "X won " : "O won";
-                                std::cout << win_msg <<'\n';
-                                Running = false;
+                                if ( s == Game::State::Draw ){ std::cout <<"Draw!"<<'\n'; }
+                                else
+                                {
+                                    std::string win_msg = ( s == State::XWon ) ? "X won " : "O won";
+                                    std::cout << win_msg <<'\n';
+                                    Game::finished = true;
+                                    Running = false;
+                                    sf::Clock c;
+                                    while(c.getElapsedTime().asSeconds() < 1.5f )
+                                    {
+                                        while ( alpha != 0)
+	                                	{
+	                                		--alpha;
+                                            allpha_tmp = alpha / alpha_div;
+                                            App.clear();
+	                                	    boardCell.setOutlineColor(sf::Color(255, 255, 255, allpha_tmp));
+                                            App.draw(boardCell);
+                                            App.display();
+	                                	}
+                                    }
+                                }
+                                return 0;
                             }
                         }
 
@@ -81,19 +103,6 @@ int TwoPlayerScreen::Run(sf::RenderWindow& App)
         //    game_->drawWinningLine(App);
         //}
         App.display();
-    }
-    sf::Clock c;
-    while(c.getElapsedTime().asSeconds() < 1.5f )
-    {
-        while ( alpha != 0)
-		{
-			--alpha;
-            allpha_tmp = alpha / alpha_div;
-            App.clear();
-		    boardCell.setOutlineColor(sf::Color(255, 255, 255, allpha_tmp));
-            App.draw(boardCell);
-            App.display();
-		}
     }
 	return -1;
 }
