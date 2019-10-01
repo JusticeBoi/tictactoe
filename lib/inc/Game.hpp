@@ -27,16 +27,22 @@ class Game
         void startTwoPlayer();
         State isFinito() ;
         int_fast8_t makeBestMove() ;
+        Zone findBestMoveZone(XO player, bool ) ;
         void run();
         BoardCell& getBoardCell();
         Turn& getTurn();
         void drawWinningLine(sf::RenderWindow& rw);
         static bool finished;
+        Zone giveTip(XO player);
+        void fadeAway(sf::RenderWindow&, float);
+
+
 
     private:
         int_fast8_t minimax(std::array<XO,9>& board, XO player, int_fast8_t d);
         BoardCell bc_;
         Turn turn_;
+        sf::RenderWindow* appPtr;
 };
 
 #endif // GAME__HPP_DEFINED 

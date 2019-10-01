@@ -121,6 +121,8 @@ void Game::start(Turn startingTurn)
     #endif
 }
 
+
+
 int_fast8_t Game::minimax(std::array<XO,9>& board, XO player, int_fast8_t depth)
 {
     auto won = BoardCell::hasWon(board);
@@ -151,6 +153,38 @@ int_fast8_t Game::minimax(std::array<XO,9>& board, XO player, int_fast8_t depth)
     return score;
 }
 
+Zone Game::findBestMoveZone(XO player, bool checkStartPosition ) 
+{
+    std::array<XO,9>& board = bc_.getBoardRep();
+    if ( checkStartPosition)
+    {
+        if ( std::all_of(board.begin(), board.end(), [](XO xo){return xo==XO::None;} ) )
+        {
+            //std::random_device rd;
+            std::mt19937 mt(time(NULL));
+            std::uniform_int_distribution<int> dist(1, 9);
+            return static_cast<Zone>(dist(mt));
+        }
+    }
+    int score = -10;
+    Zone z = Zone::OUT;
+    for(int i=0; i<9; i++)
+    {
+      if(board[i] == XO::None)
+      {
+        board[i] = player;
+        int tmpScore = -minimax(board, static_cast<XO>(-player), 0);
+        //std::cout <<" i : " << i << " tmpScore : " << tmpScore <<'\n'; 
+        board[i] = XO::None;
+        if(tmpScore > score) 
+        {
+          score = tmpScore;
+          z = static_cast<Zone>(i+1);
+        }
+      }
+    }
+    return z;
+}
 int_fast8_t Game::makeBestMove() 
 {
     std::array<XO,9>& board = bc_.getBoardRep();
@@ -161,25 +195,7 @@ int_fast8_t Game::makeBestMove()
         std::uniform_int_distribution<int> dist(1, 9);
         return bc_.fillZoneWith(static_cast<Zone>(dist(mt)), XO::O);
     }
-    int score = -10;
-    Zone z = Zone::OUT;
-    for(int i=0; i<9; i++)
-    {
-      if(board[i] == XO::None)
-      {
-        board[i] = XO::O;
-        int tmpScore = -minimax(board, XO::X, 0);
-        //std::cout <<" i : " << i << " tmpScore : " << tmpScore <<'\n'; 
-        board[i] = XO::None;
-        if(tmpScore > score) 
-        {
-          score = tmpScore;
-          z = static_cast<Zone>(i+1);
-        }
-      }
-    }
-    //std::cout << "zone : " << z <<'\n';
-    return bc_.fillZoneWith(z, XO::O);
+    return bc_.fillZoneWith(findBestMoveZone(XO::O,false), XO::O);
 
 }
 void Game::run()
@@ -188,6 +204,7 @@ void Game::run()
     FUNCTION_START;
     #endif
     sf::RenderWindow App(sf::VideoMode(800.f, 800.f), "Tic Tac Toe"); 
+    appPtr = &App;
 
     int screen = 0;
     int old_screen = 0;
@@ -256,6 +273,29 @@ Game::Turn& Game::getTurn()
 //    //}
 //}
 
+void Game::fadeAway(sf::RenderWindow& rw, float secs)
+{
+  sf::Clock c;
+  int alpha = 255*6;
+  static const int alpha_div = 6;
+  static const int alpha_max = 255*6;
+  int alpha_tmp = 0;
+    while(c.getElapsedTime().asSeconds() < secs )
+    {
+          --alpha;
+          alpha = (alpha - 1 != 0 ) ? alpha -1 : 0;
+          alpha_tmp = alpha / alpha_div;
+          appPtr->clear();
+    	    bc_.setOutlineColor(sf::Color(255, 255, 255, alpha_tmp));
+          appPtr->draw(bc_);
+          appPtr->display();
+    }
+}
+Zone Game::giveTip(XO player)
+{
+    return Zone::ONE;
+     
+}
 Game::State Game::isFinito() 
 {
     //XO won = bc_.hasWOn();

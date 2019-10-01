@@ -13,14 +13,6 @@ private:
 
 	int alpha_max;
 	int alpha_div;
-    enum class Hover : uint8_t
-    {
-        EXIT = 0,
-        CONTINUE = 1,
-        PTOP = 2,
-        PTOAI = 3,
-        OUT = 4
-    };
 public:
     void init() override;
 	MenuScreen();

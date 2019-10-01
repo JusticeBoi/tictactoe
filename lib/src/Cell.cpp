@@ -84,6 +84,10 @@ void Cell::setFont(const sf::Font& sf)
     font_ = sf;
     symbol_.setFont(sf);
 }
+void Cell::setSymbolColor(const sf::Color& c)
+{
+    symbol_.setFillColor(c);
+}
 
 void Cell::setZone(Zone z)
 {

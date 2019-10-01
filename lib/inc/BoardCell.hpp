@@ -41,6 +41,9 @@ class BoardCell : public sf::Drawable
         sf::RectangleShape winningLine_;
 
         void cleanUpForNextRound();
+        const std::array<Cell,9>& getBoard() const;
+        std::array<Cell,9>& getBoard() ;
+        bool eraseZoneState( Zone zone );
     private:
         void init();
         std::array<Cell,9> board_;

@@ -61,6 +61,7 @@ class Cell : public sf::Drawable
         void setOutlineColor(const sf::Color& c);
         Zone getZone() const;
         XO getXO() const;
+        void setSymbolColor(const sf::Color& c);
 
     private:
         XO xo_;

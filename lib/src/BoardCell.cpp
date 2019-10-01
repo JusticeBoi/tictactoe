@@ -93,6 +93,19 @@ bool BoardCell::fillZoneWith( Zone zone, XO xOrO )
         return 0;
     }
 }
+bool BoardCell::eraseZoneState( Zone zone )
+{
+    if ( board_[zone - 1].getXO() == XO::None ) 
+    {
+        return 0;
+    }
+    else
+    {
+        board_[zone-1].setXO(XO::None);
+        boardRep_[zone-1] = XO::None;
+        return 1;
+    }
+}
 Zone BoardCell::clickedZone(const sf::Vector2f& v) const
 {
     #ifdef WITH_FUNCTION_UTILITIES
@@ -104,6 +117,14 @@ Zone BoardCell::clickedZone(const sf::Vector2f& v) const
     #ifdef WITH_FUNCTION_UTILITIES
     SCOPED_FUNCTION_END;
     #endif
+}
+const std::array<Cell,9>& BoardCell::getBoard() const
+{
+    return board_;
+}
+std::array<Cell,9>& BoardCell::getBoard() 
+{
+    return board_;
 }
 std::array<XO,9>& BoardCell::getBoardRep()
 {
