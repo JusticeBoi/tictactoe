@@ -146,7 +146,7 @@ void Game::run()
 		screen = Screens[screen]->Run(App);
         if ( finished ) 
         {
-            std::cout <<"finished" <<'\n';
+            //std::cout <<"finished" <<'\n';
             bc_.cleanUpForNextRound();
             turn_ = Turn::Machine;
             std::for_each(Screens.begin(), Screens.end(), [](cScreen* scr ){scr->init();});

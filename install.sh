@@ -2,7 +2,7 @@
 #dependencies =sudo apt-get install         \
 #    libfreetype6-dev    \ #    libx11-dev          \ #    libxrandr-dev       \ #    libgl1-mesa-dev     \ #    libudev-dev         \ #    libopenal-dev       \ #    libflac-dev         \ #    libogg-dev          \ #    libvorbis-dev -y
 depend="build-essentials ,libfreetype6-dev, libx11-dev, libxrandr-dev, libgl1-mesa-dev, libudev-dev, libopenal-dev, libflac-dev, libogg-dev, libvorbis-dev" 
-wget https://codeload.github.com/texus/TGUI/zip/v0.8.5 -O TGUI-0.8.5.zip
+#wget https://codeload.github.com/texus/TGUI/zip/v0.8.5 -O TGUI-0.8.5.zip
 wget https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip
 while true; do
     read -p "Do you wish to install ${depend} , requires sudo?(y/n) " yn
@@ -74,13 +74,13 @@ mkdir build && cd build
 cmake ../ -DCMAKE_INSTALL_PREFIX:PATH=${current_dir}/SFML-2.5.1-build && make -j${cores}
 make install    
 
-cd ${current_dir}
-unzip TGUI-0.8.5.zip 
-
-cd TGUI-0.8.5
-mkdir build && cd build
-
-cmake ../ -DCMAKE_INSTALL_PREFIX:PATH=${current_dir}/TGUI-0.8.5-build -DSFML_DIR:PATH=${current_dir}/SFML-2.5.1-build/lib/cmake/SFML && make -j${cores}
-make install    
+#cd ${current_dir}
+#unzip TGUI-0.8.5.zip 
+#
+#cd TGUI-0.8.5
+#mkdir build && cd build
+#
+#cmake ../ -DCMAKE_INSTALL_PREFIX:PATH=${current_dir}/TGUI-0.8.5-build -DSFML_DIR:PATH=${current_dir}/SFML-2.5.1-build/lib/cmake/SFML && make -j${cores}
+#make install    
 
 
