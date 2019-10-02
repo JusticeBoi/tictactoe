@@ -3,132 +3,15 @@
 
 
 bool Game::finished = false;
-void Game::startTwoPlayer()
-{
-    #ifdef WITH_FUNCTION_UTILITIES
-    FUNCTION_START;
-    #endif
-    sf::RenderWindow w_(sf::VideoMode(800.f, 800.f), "Tic Tac Toe"); 
-    turn_ = Turn::Human;
-
-    while (w_.isOpen())
-    {
-        sf::Event event;
-        while (w_.pollEvent(event))
-        {
-           switch(event.type)
-           {
-               case sf::Event::Closed:
-                   w_.close();
-                   break;
-               case sf::Event::MouseButtonPressed:
-                   if (event.mouseButton.button == sf::Mouse::Left)
-                   {
-                       sf::Vector2f mapped = w_.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-                       Zone clickedZone = bc_.clickedZone(mapped);
-                       if ( clickedZone != Zone::OUT )
-                       {
-                           if ( turn_ == Turn::Human )
-                           {
-                             if (bc_.fillZoneWith(clickedZone, XO::X )) turn_ = Turn::Machine;
-                           }
-                           else
-                           {
-
-                             if (bc_.fillZoneWith(clickedZone, XO::O )) turn_ = Turn::Human;
-                           }
-                           State s = isFinito();
-                           if ( s != Game::State::NotFinished)
-                           {
-                               std::string win_msg = ( s == State::XWon ) ? "X won " : "O won";
-                               std::cout << win_msg <<'\n';
-                               w_.close();
-                               
-                           }
-
-                       }
-
-                   }
-                   break;
-           }
-
-        }
-        w_.clear();
-        w_.draw(bc_);
-        w_.display();
-    }
-    #ifdef WITH_FUNCTION_UTILITIES
-    FUNCTION_END;
-    #endif
-}
-
-void Game::start(Turn startingTurn)
-{
-    #ifdef WITH_FUNCTION_UTILITIES
-    FUNCTION_START;
-    #endif
-    sf::RenderWindow w_(sf::VideoMode(800.f, 800.f), "Tic Tac Toe"); 
-    turn_ = startingTurn;
-
-
-    while (w_.isOpen())
-    {
-        sf::Event event;
-        while (w_.pollEvent(event))
-        {
-            if ( turn_ == Turn::Human )
-            {
-                switch(event.type)
-                {
-                    case sf::Event::Closed:
-                        w_.close();
-                        break;
-                    case sf::Event::MouseButtonPressed:
-                        if (event.mouseButton.button == sf::Mouse::Left)
-                        {
-                            sf::Vector2f mapped = w_.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-                            Zone clickedZone = bc_.clickedZone(mapped);
-                            if ( clickedZone != Zone::OUT )
-                            {
-                                if (bc_.fillZoneWith(clickedZone, XO::X )) turn_ = Turn::Machine;
-
-                            }
-                        }
-                        break;
-                }
-            }
-            else
-            {
-                this->makeBestMove(); turn_ = Turn::Human;
-            }
-
-        }
-        State s = isFinito();
-        if ( s != Game::State::NotFinished)
-        {
-            if ( s == Game::State::Draw ){ std::cout <<"Draw!"<<'\n'; w_.close(); break; };
-            std::string win_msg = ( s == State::XWon ) ? "X won " : "O won";
-            std::cout << win_msg <<'\n';
-            w_.close();
-        }
-
-        w_.clear();
-        w_.draw(bc_);
-        w_.display();
-    }
-    #ifdef WITH_FUNCTION_UTILITIES
-    FUNCTION_END;
-    #endif
-}
-
-
 
 int_fast8_t Game::minimax(std::array<XO,9>& board, XO player, int_fast8_t depth)
 {
     auto won = BoardCell::hasWon(board);
     if (won.first != XO::None )
     {
-        return (10-depth)*(won.first*player);
+        int_fast8_t ret = (10-depth)*(won.first*player); 
+        //std::cout << "from minimax : " << static_cast<int>(ret) <<'\n';
+        return ret;
         //return won*player;
     }
 
@@ -153,8 +36,11 @@ int_fast8_t Game::minimax(std::array<XO,9>& board, XO player, int_fast8_t depth)
     return score;
 }
 
-Zone Game::findBestMoveZone(XO player, bool checkStartPosition ) 
+std::pair<Zone, int> Game::findBestMoveZone(XO player, bool checkStartPosition ) 
 {
+    #ifdef WITH_FUNCTION_UTILITIES
+    SCOPED_FUNCTION_START;
+    #endif
     std::array<XO,9>& board = bc_.getBoardRep();
     if ( checkStartPosition)
     {
@@ -163,7 +49,7 @@ Zone Game::findBestMoveZone(XO player, bool checkStartPosition )
             //std::random_device rd;
             std::mt19937 mt(time(NULL));
             std::uniform_int_distribution<int> dist(1, 9);
-            return static_cast<Zone>(dist(mt));
+            return std::make_pair(static_cast<Zone>(dist(mt)),-1);
         }
     }
     int score = -10;
@@ -176,14 +62,19 @@ Zone Game::findBestMoveZone(XO player, bool checkStartPosition )
         int tmpScore = -minimax(board, static_cast<XO>(-player), 0);
         //std::cout <<" i : " << i << " tmpScore : " << tmpScore <<'\n'; 
         board[i] = XO::None;
+
         if(tmpScore > score) 
         {
           score = tmpScore;
           z = static_cast<Zone>(i+1);
+          //std::cout <<"new score : " << tmpScore <<"of zone : "<< i+1 <<'\n';
         }
       }
     }
-    return z;
+    return std::make_pair(z,score);
+    #ifdef WITH_FUNCTION_UTILITIES
+    SCOPED_FUNCTION_END;
+    #endif
 }
 int_fast8_t Game::makeBestMove() 
 {
@@ -195,7 +86,39 @@ int_fast8_t Game::makeBestMove()
         std::uniform_int_distribution<int> dist(1, 9);
         return bc_.fillZoneWith(static_cast<Zone>(dist(mt)), XO::O);
     }
-    return bc_.fillZoneWith(findBestMoveZone(XO::O,false), XO::O);
+    auto bestMovePair = findBestMoveZone(XO::O,false);
+    if ( bestMovePair.second == 10 ) 
+    {
+        showAboutToLose();
+    }
+    return bc_.fillZoneWith(bestMovePair.first, XO::O);
+
+}
+void Game::showAboutToLose()
+{
+    sf::Texture texture;
+    sf::Sprite sp;
+	if (!texture.loadFromFile("../themes/crying.png" ))
+	{
+		return ;
+	}
+    sp.setTexture(texture);
+    sf::Clock c;
+    int alpha = 0;
+	sp.setColor(sf::Color(255, 255, 255, alpha));
+    static const int alpha_div = 5;
+    static const int alpha_max = 255*5;
+    //int alpha_tmp = 0;
+    while(c.getElapsedTime().asSeconds() < 1.2f )
+    {
+          alpha = (alpha + 1 != alpha_max ) ? alpha + 1 : alpha_max;
+          //alpha_tmp = alpha / alpha_div;
+          appPtr->clear();
+	      sp.setColor(sf::Color(255, 255, 255, alpha/alpha_div));
+          appPtr->draw(sp);
+          appPtr->draw(bc_);
+          appPtr->display();
+    }
 
 }
 void Game::run()
@@ -245,33 +168,6 @@ Game::Turn& Game::getTurn()
 {
     return turn_;
 }
-//void Game::drawWinningLine(sf::RenderWindow& rw)
-//{
-//    static bool winningLineFirstTime = false;
-//    static sf::Clock c;
-//    //if ( bc_.winningLine_.getSize() != sf::Vector2f{0,0} )
-//    //{
-//        if (!winningLineFirstTime)
-//        {
-//            int alpha = 0; 
-//            int alpha_max = 5*255;  
-//            int alpha_div = 5;
-//            while(c.getElapsedTime().asSeconds() < 1.8f )
-//            {
-//                while ( alpha < alpha_max)
-//	        	{
-//                    ++alpha;
-//                    rw.clear();
-//                    bc_.winningLine_.setFillColor(sf::Color(255, 255, 255, alpha/alpha_div));
-//                    rw.draw(bc_.winningLine_);
-//                    rw.draw(bc_);
-//                    rw.display();
-//                }
-//            }
-//            winningLineFirstTime = true;
-//        }
-//    //}
-//}
 
 void Game::fadeAway(sf::RenderWindow& rw, float secs)
 {
@@ -282,7 +178,6 @@ void Game::fadeAway(sf::RenderWindow& rw, float secs)
   int alpha_tmp = 0;
     while(c.getElapsedTime().asSeconds() < secs )
     {
-          --alpha;
           alpha = (alpha - 1 != 0 ) ? alpha -1 : 0;
           alpha_tmp = alpha / alpha_div;
           appPtr->clear();
@@ -290,11 +185,6 @@ void Game::fadeAway(sf::RenderWindow& rw, float secs)
           appPtr->draw(bc_);
           appPtr->display();
     }
-}
-Zone Game::giveTip(XO player)
-{
-    return Zone::ONE;
-     
 }
 Game::State Game::isFinito() 
 {

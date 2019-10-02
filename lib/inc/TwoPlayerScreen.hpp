@@ -10,7 +10,7 @@ class TwoPlayerScreen : public cScreen
 {
     public:
     	TwoPlayerScreen(Game& game); 
-    	virtual int Run(sf::RenderWindow &App);
+    	virtual int Run(sf::RenderWindow &App) override;
         void init() override;
     private:
         Game* game_;

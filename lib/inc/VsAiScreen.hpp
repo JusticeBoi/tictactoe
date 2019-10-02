@@ -10,7 +10,7 @@ class VsAiScreen : public cScreen
 {
     public:
     	VsAiScreen(Game& game); 
-    	virtual int Run(sf::RenderWindow &App);
+    	virtual int Run(sf::RenderWindow &App) override;
         void init() override;
     private:
         Game* game_;

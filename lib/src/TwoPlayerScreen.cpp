@@ -88,7 +88,7 @@ int TwoPlayerScreen::Run(sf::RenderWindow& App)
                         else if ( Tip.getGlobalBounds().contains(mapped) )
                         {
                             XO player = (turn == Turn::Human ) ? XO::X : XO::O;
-                            play_tip = game_->findBestMoveZone(player, true);
+                            play_tip = game_->findBestMoveZone(player, true).first;
                             boardCell.fillZoneWith(play_tip, player);
                             sf::Clock c;
                             Cell& cellToDraw = boardCell.getBoard()[play_tip - 1];

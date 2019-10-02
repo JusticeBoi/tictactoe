@@ -5,7 +5,6 @@
 #include "BoardCell.hpp"
 #include <iostream>
 
-
 class Game
 {
     public:
@@ -23,18 +22,17 @@ class Game
         };
         Game() = default;
         ~Game() = default;
-        void start(Turn startingTurn);
-        void startTwoPlayer();
         State isFinito() ;
         int_fast8_t makeBestMove() ;
-        Zone findBestMoveZone(XO player, bool ) ;
+        std::pair<Zone,int> findBestMoveZone(XO player, bool ) ;
         void run();
         BoardCell& getBoardCell();
         Turn& getTurn();
         void drawWinningLine(sf::RenderWindow& rw);
         static bool finished;
-        Zone giveTip(XO player);
         void fadeAway(sf::RenderWindow&, float);
+        std::vector<int> getAllPossibleMovesIndices();
+        void showAboutToLose();
 
 
 

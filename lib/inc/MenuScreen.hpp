@@ -18,6 +18,6 @@ public:
 	MenuScreen();
     NowPlaying playing;
     NowPlaying wasPlaying;
-	virtual int Run(sf::RenderWindow &App);
+	virtual int Run(sf::RenderWindow &App) override;
 };
 #endif

@@ -44,6 +44,7 @@ class BoardCell : public sf::Drawable
         const std::array<Cell,9>& getBoard() const;
         std::array<Cell,9>& getBoard() ;
         bool eraseZoneState( Zone zone );
+        unsigned numberOfEmpty = 9;
     private:
         void init();
         std::array<Cell,9> board_;

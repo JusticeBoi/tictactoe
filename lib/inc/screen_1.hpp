@@ -14,7 +14,7 @@ private:
 	sf::RectangleShape Rectangle;
 public:
 	screen_1();
-	virtual int Run(sf::RenderWindow &App);
+	virtual int Run(sf::RenderWindow &App) override;
     virtual void init() override;
 };
 

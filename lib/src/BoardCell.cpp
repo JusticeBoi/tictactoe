@@ -86,6 +86,8 @@ bool BoardCell::fillZoneWith( Zone zone, XO xOrO )
     {
         board_[zone-1].setXO(xOrO);
         boardRep_[zone-1] = xOrO;
+        --numberOfEmpty;
+        //std::cout << numberOfEmpty <<'\n';
         return 1;
     }
     else
@@ -103,6 +105,7 @@ bool BoardCell::eraseZoneState( Zone zone )
     {
         board_[zone-1].setXO(XO::None);
         boardRep_[zone-1] = XO::None;
+        ++numberOfEmpty;
         return 1;
     }
 }
@@ -155,12 +158,12 @@ XO BoardCell::hasWonNew() const
 
 void BoardCell::drawWinningLine( const threeInt& tup )
 {
-    std::cout <<"winning zone : \n";
+    //std::cout <<"winning zone : \n";
     int from = std::get<0>(tup);
     int to = std::get<2>(tup);
-    std::cout << from<< '\t';
-    std::cout << std::get<1>(tup) << '\t';
-    std::cout << to << '\t';
+    //std::cout << from<< '\t';
+    //std::cout << std::get<1>(tup) << '\t';
+    //std::cout << to << '\t';
     Cell fromCell = board_[from];
     Cell toCell = board_[to];
     sf::Vector2f fromPos = fromCell.getPosition();
@@ -197,4 +200,5 @@ std::pair<XO, BoardCell::threeInt> BoardCell::hasWon(const std::array<XO,9>& boa
 void BoardCell::cleanUpForNextRound()
 {
     init();
+    numberOfEmpty = 9;
 }
