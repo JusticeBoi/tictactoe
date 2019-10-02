@@ -6,6 +6,7 @@
 
 #include <SFML/Graphics.hpp>
 
+class Game;
 class MenuScreen : public cScreen
 {
 private:
@@ -13,9 +14,10 @@ private:
 
 	int alpha_max;
 	int alpha_div;
+    Game* game_;
 public:
     void init() override;
-	MenuScreen();
+	MenuScreen(Game& g);
     NowPlaying playing;
     NowPlaying wasPlaying;
 	virtual int Run(sf::RenderWindow &App) override;

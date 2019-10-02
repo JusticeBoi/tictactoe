@@ -18,7 +18,8 @@ public :
         PTOP = 2,
         PTOAI = 3,
         OUT = 4,
-        TIP = 5
+        TIP = 5,
+        EXITMENU = 6
     };
     virtual int Run (sf::RenderWindow &App) = 0;
     virtual int loadFromFile (const std::string& str) ; 

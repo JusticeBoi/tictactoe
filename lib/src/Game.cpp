@@ -113,13 +113,19 @@ void Game::showAboutToLose()
     {
           alpha = (alpha + 1 != alpha_max ) ? alpha + 1 : alpha_max;
           //alpha_tmp = alpha / alpha_div;
-          appPtr->clear();
+          //appPtr->clear();
 	      sp.setColor(sf::Color(255, 255, 255, alpha/alpha_div));
           appPtr->draw(sp);
           appPtr->draw(bc_);
           appPtr->display();
     }
 
+}
+void Game::reset()
+{
+    bc_.cleanUpForNextRound();
+    turn_ = Turn::Machine;
+    finished = false;
 }
 void Game::run()
 {
@@ -133,7 +139,7 @@ void Game::run()
     int old_screen = 0;
 	std::vector<cScreen*> Screens;
 
-	MenuScreen s0;
+	MenuScreen s0(*this);
 	Screens.push_back(&s0);
     TwoPlayerScreen twoPlayer(*this);
     Screens.push_back(&twoPlayer);

@@ -33,6 +33,7 @@ class Game
         void fadeAway(sf::RenderWindow&, float);
         std::vector<int> getAllPossibleMovesIndices();
         void showAboutToLose();
+        void reset();
 
 
 

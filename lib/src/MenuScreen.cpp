@@ -1,4 +1,5 @@
 #include "../inc/MenuScreen.hpp"
+#include "Game.hpp"
 
 void MenuScreen::init()
 {
@@ -7,7 +8,7 @@ void MenuScreen::init()
 	playing = NowPlaying::NOTHING;
 	wasPlaying = NowPlaying::NOTHING;
 }
-MenuScreen::MenuScreen()
+MenuScreen::MenuScreen(Game& g) : game_(&g)
 {
     init();
 }
@@ -21,6 +22,7 @@ int MenuScreen::Run(sf::RenderWindow &App)
 	sf::Text PlayVsAI;
 	sf::Text Exit;
 	sf::Text Continue;
+	sf::Text ExitToMenu;
 	//int menu = 0;
 
 	if (!loadFromFile("../themes/spiral.jpg"))
@@ -54,6 +56,11 @@ int MenuScreen::Run(sf::RenderWindow &App)
 	Continue.setCharacterSize(40);
 	Continue.setString("Continue");
 	Continue.setPosition({ 250.f, 270.f });
+
+	ExitToMenu.setFont(Font);
+	ExitToMenu.setCharacterSize(40);
+	ExitToMenu.setString("Exit To Menu");
+	ExitToMenu.setPosition({ 250.f, 330.f });
     Hover hover  = Hover::OUT; 
 
 	if (playing != NowPlaying::NOTHING)
@@ -88,6 +95,12 @@ int MenuScreen::Run(sf::RenderWindow &App)
 				        	    	playing = wasPlaying;
                                     return playing;
                                 }
+                                else if ( ExitToMenu.getGlobalBounds().contains(mapped) )
+                                {
+                                    playing = NowPlaying::NOTHING;
+                                    game_->reset();
+                                    return 0;
+                                }
                             }
                             else if ( PlayTwoPlayer.getGlobalBounds().contains(mapped) ) 
                             {
@@ -119,6 +132,7 @@ int MenuScreen::Run(sf::RenderWindow &App)
                         {
                             hover = Hover::CONTINUE;
                         }
+                        else if ( ExitToMenu.getGlobalBounds().contains(mapped) ) hover = Hover::EXITMENU;
                         else hover = Hover::OUT;
 
                         break;
@@ -141,6 +155,7 @@ int MenuScreen::Run(sf::RenderWindow &App)
 			    PlayVsAI.setFillColor(sf::Color(255, 255, 255, 255));
 			    Continue.setFillColor(sf::Color(255, 255, 255, 255));
 			    Exit.setFillColor(sf::Color(255, 0, 0, 255));
+			    ExitToMenu.setFillColor(sf::Color(255, 255, 255, 255));
                 break;
             }
             case Hover::PTOP:
@@ -149,6 +164,7 @@ int MenuScreen::Run(sf::RenderWindow &App)
 			    PlayVsAI.setFillColor(sf::Color(255, 255, 255, 255));
 			    Continue.setFillColor(sf::Color(255, 255, 255, 255));
 			    Exit.setFillColor(sf::Color(255, 255, 255, 255));
+			    ExitToMenu.setFillColor(sf::Color(255, 255, 255, 255));
                 break;
             }
             case Hover::PTOAI:
@@ -157,6 +173,7 @@ int MenuScreen::Run(sf::RenderWindow &App)
 			    PlayVsAI.setFillColor(sf::Color(255, 0, 0, 255));
 			    Continue.setFillColor(sf::Color(255, 255, 255, 255));
 			    Exit.setFillColor(sf::Color(255, 255, 255, 255));
+			    ExitToMenu.setFillColor(sf::Color(255, 255, 255, 255));
                 break;
             }
             case Hover::CONTINUE:
@@ -164,6 +181,16 @@ int MenuScreen::Run(sf::RenderWindow &App)
 			    PlayTwoPlayer.setFillColor(sf::Color(255, 255, 255, 255));
 			    PlayVsAI.setFillColor(sf::Color(255, 255, 255, 255));
 			    Continue.setFillColor(sf::Color(255, 0 , 0, 255));
+			    Exit.setFillColor(sf::Color(255, 255, 255, 255));
+			    ExitToMenu.setFillColor(sf::Color(255, 255, 255, 255));
+                break;
+            }
+            case Hover::EXITMENU:
+            {
+			    PlayTwoPlayer.setFillColor(sf::Color(255, 255, 255, 255));
+			    PlayVsAI.setFillColor(sf::Color(255, 255, 255, 255));
+			    Continue.setFillColor(sf::Color(255, 255, 255, 255));
+			    ExitToMenu.setFillColor(sf::Color(255, 0 , 0, 255));
 			    Exit.setFillColor(sf::Color(255, 255, 255, 255));
                 break;
             }
@@ -173,6 +200,7 @@ int MenuScreen::Run(sf::RenderWindow &App)
 			    PlayVsAI.setFillColor(sf::Color(255, 255, 255, 255));
 			    Continue.setFillColor(sf::Color(255, 255 , 255, 255));
 			    Exit.setFillColor(sf::Color(255, 255, 255, 255));
+			    ExitToMenu.setFillColor(sf::Color(255, 255, 255, 255));
                 break;
             }
         }
@@ -185,6 +213,7 @@ int MenuScreen::Run(sf::RenderWindow &App)
 			if (playing)
 			{
 				App.draw(Continue);
+				App.draw(ExitToMenu);
 			}
 			else
 			{
