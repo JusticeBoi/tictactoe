@@ -4,8 +4,6 @@
 
 Cell::Cell()
 {
-    xo_ = XO::None;
-
   rec_.setFillColor(sf::Color::Transparent);
   rec_.setOutlineColor(sf::Color(255,255,255,255));
   rec_.setOutlineThickness(borderThickness);

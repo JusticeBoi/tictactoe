@@ -10,9 +10,7 @@ int_fast8_t Game::minimax(std::array<XO,9>& board, XO player, int_fast8_t depth)
     if (won.first != XO::None )
     {
         int_fast8_t ret = (10-depth)*(won.first*player); 
-        //std::cout << "from minimax : " << static_cast<int>(ret) <<'\n';
         return ret;
-        //return won*player;
     }
 
     int_fast8_t score = -11;
@@ -23,7 +21,7 @@ int_fast8_t Game::minimax(std::array<XO,9>& board, XO player, int_fast8_t depth)
         {
             board[i] = player;
             XO opponent = static_cast<XO>(-player);
-            int_fast8_t lastScore = -minimax(board, opponent, depth+1); 
+            const int_fast8_t lastScore = -minimax(board, opponent, depth+1); 
             if ( lastScore > score )
             {
                 score = lastScore;
@@ -44,9 +42,8 @@ std::pair<Zone, int> Game::findBestMoveZone(XO player, bool checkStartPosition )
     std::array<XO,9>& board = bc_.getBoardRep();
     if ( checkStartPosition)
     {
-        if ( std::all_of(board.begin(), board.end(), [](XO xo){return xo==XO::None;} ) )
+        if ( std::all_of(board.begin(), board.end(), [](XO xo){return xo == XO::None;} ) )
         {
-            //std::random_device rd;
             std::mt19937 mt(time(NULL));
             std::uniform_int_distribution<int> dist(1, 9);
             return std::make_pair(static_cast<Zone>(dist(mt)),-1);
@@ -59,15 +56,13 @@ std::pair<Zone, int> Game::findBestMoveZone(XO player, bool checkStartPosition )
       if(board[i] == XO::None)
       {
         board[i] = player;
-        int tmpScore = -minimax(board, static_cast<XO>(-player), 0);
-        //std::cout <<" i : " << i << " tmpScore : " << tmpScore <<'\n'; 
+        const int tmpScore = -minimax(board, static_cast<XO>(-player), 0);
         board[i] = XO::None;
 
         if(tmpScore > score) 
         {
           score = tmpScore;
           z = static_cast<Zone>(i+1);
-          //std::cout <<"new score : " << tmpScore <<"of zone : "<< i+1 <<'\n';
         }
       }
     }
@@ -81,7 +76,6 @@ int_fast8_t Game::makeBestMove()
     std::array<XO,9>& board = bc_.getBoardRep();
     if ( std::all_of(board.begin(), board.end(), [](XO xo){return xo==XO::None;} ) )
     {
-        //std::random_device rd;
         std::mt19937 mt(time(NULL));
         std::uniform_int_distribution<int> dist(1, 9);
         return bc_.fillZoneWith(static_cast<Zone>(dist(mt)), XO::O);
@@ -92,7 +86,6 @@ int_fast8_t Game::makeBestMove()
         showAboutToLose();
     }
     return bc_.fillZoneWith(bestMovePair.first, XO::O);
-
 }
 void Game::showAboutToLose()
 {
@@ -108,18 +101,14 @@ void Game::showAboutToLose()
 	sp.setColor(sf::Color(255, 255, 255, alpha));
     static const int alpha_div = 5;
     static const int alpha_max = 255*5;
-    //int alpha_tmp = 0;
     while(c.getElapsedTime().asSeconds() < 1.2f )
     {
           alpha = (alpha + 1 != alpha_max ) ? alpha + 1 : alpha_max;
-          //alpha_tmp = alpha / alpha_div;
-          //appPtr->clear();
 	      sp.setColor(sf::Color(255, 255, 255, alpha/alpha_div));
           appPtr->draw(sp);
           appPtr->draw(bc_);
           appPtr->display();
     }
-
 }
 void Game::reset()
 {
@@ -132,7 +121,7 @@ void Game::run()
     #ifdef WITH_FUNCTION_UTILITIES
     FUNCTION_START;
     #endif
-    sf::RenderWindow App(sf::VideoMode(800.f, 800.f), "Tic Tac Toe"); 
+    sf::RenderWindow App(sf::VideoMode(800u, 800u), "Tic Tac Toe"); 
     appPtr = &App;
 
     int screen = 0;
@@ -152,19 +141,15 @@ void Game::run()
 		screen = Screens[screen]->Run(App);
         if ( finished ) 
         {
-            //std::cout <<"finished" <<'\n';
             bc_.cleanUpForNextRound();
             turn_ = Turn::Machine;
             std::for_each(Screens.begin(), Screens.end(), [](cScreen* scr ){scr->init();});
             finished = false;
         }
 	}
-
     #ifdef WITH_FUNCTION_UTILITIES
     FUNCTION_END;
     #endif
-
-
 }
 BoardCell& Game::getBoardCell()
 {
@@ -178,25 +163,24 @@ Game::Turn& Game::getTurn()
 void Game::fadeAway(sf::RenderWindow& rw, float secs)
 {
   sf::Clock c;
-  int alpha = 255*6;
-  static const int alpha_div = 6;
-  static const int alpha_max = 255*6;
-  int alpha_tmp = 0;
+  uint_fast16_t alpha = 255*6;
+  static const uint_fast16_t alpha_div = 6;
+  static const uint_fast16_t alpha_max = 255*6;
+  uint_fast16_t alpha_tmp = 0;
     while(c.getElapsedTime().asSeconds() < secs )
     {
           alpha = (alpha - 1 != 0 ) ? alpha -1 : 0;
           alpha_tmp = alpha / alpha_div;
           appPtr->clear();
-    	    bc_.setOutlineColor(sf::Color(255, 255, 255, alpha_tmp));
+    	  bc_.setOutlineColor(sf::Color(255, 255, 255, alpha_tmp));
           appPtr->draw(bc_);
           appPtr->display();
     }
 }
 Game::State Game::isFinito() 
 {
-    //XO won = bc_.hasWOn();
     const std::array<XO,9>& board = bc_.getBoardRep();
-    auto won = BoardCell::hasWon(board);
+    const auto won = BoardCell::hasWon(board);
     if ( won.first != XO::None )
     {
         bc_.drawWinningLine(won.second);

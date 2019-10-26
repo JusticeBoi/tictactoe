@@ -25,7 +25,6 @@ class BoardCell : public sf::Drawable
          * if place was already full, no filling is done and false is returned*/
         bool fillZoneWith( Zone zone, XO xOrO );
         //XO hasWOn() const ;
-        XO hasWonNew() const ;
         static std::pair<XO, threeInt> hasWon(const std::array<XO,9>& board) ;
 
         std::array<XO,9>& getBoardRep();
@@ -34,9 +33,6 @@ class BoardCell : public sf::Drawable
         void setOutlineColor(const sf::Color& c);
 
         void drawWinningLine(const threeInt& zt);
-        //static constexpr Zone winningCombination[8][3] = { {ONE, TWO, THREE}, {FOUR, FIVE, SIX}, {SEVEN, EIGHT, NINE},
-        //                                                   {ONE, FOUR, SEVEN}, {TWO, FIVE, EIGHT}, {THREE, SIX, NINE},
-        //                                                   {ONE, FIVE, NINE}, {THREE, FIVE, SEVEN} };
 
         sf::RectangleShape winningLine_;
 
@@ -44,15 +40,14 @@ class BoardCell : public sf::Drawable
         const std::array<Cell,9>& getBoard() const;
         std::array<Cell,9>& getBoard() ;
         bool eraseZoneState( Zone zone );
-        unsigned numberOfEmpty = 9;
+        uint8_t numberOfEmpty = 9;
     private:
+		void cleanUp();
         void init();
         std::array<Cell,9> board_;
         std::array<XO,9> boardRep_;
         sf::Font font_;
 
 };
-
-
 
 #endif // BOARD__CELL__HPP_DEFINED

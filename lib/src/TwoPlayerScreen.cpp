@@ -1,14 +1,8 @@
 #include "../inc/TwoPlayerScreen.hpp"
 #include "Game.hpp"
 
-void TwoPlayerScreen::init()
-{
-	alpha_max = 6 * 255;
-	alpha_div = 6;
-}
 TwoPlayerScreen::TwoPlayerScreen( Game& g  ): game_(&g)
 {
-    init();
 };
 int TwoPlayerScreen::Run(sf::RenderWindow& App)
 {
@@ -16,14 +10,13 @@ int TwoPlayerScreen::Run(sf::RenderWindow& App)
     using State = Game::State;
 
     sf::Event event;
-	int alpha = 0;
-    int allpha_tmp = 0;
+	uint_fast16_t alpha = 0;
 
     bool Running = true;
     BoardCell& boardCell = game_->getBoardCell();
 	boardCell.setOutlineColor(sf::Color(255, 255, 255, alpha));
-    Game::Turn& turn = game_->getTurn();
-    Game::State s = Game::State::NotFinished;
+    Turn& turn = game_->getTurn();
+    State s = State::NotFinished;
 
 	sf::Font Font;
 	sf::Text Tip;
@@ -53,8 +46,8 @@ int TwoPlayerScreen::Run(sf::RenderWindow& App)
                 case sf::Event::MouseButtonPressed:
                     if (event.mouseButton.button == sf::Mouse::Left)
                     {
-                        sf::Vector2f mapped = App.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-                        Zone clickedZone = boardCell.clickedZone(mapped);
+                        const sf::Vector2f mapped = App.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
+                        const Zone clickedZone = boardCell.clickedZone(mapped);
                         if ( clickedZone != Zone::OUT )
                         {
                             if ( turn == Game::Turn::Human )
@@ -87,7 +80,7 @@ int TwoPlayerScreen::Run(sf::RenderWindow& App)
                         }
                         else if ( Tip.getGlobalBounds().contains(mapped) )
                         {
-                            XO player = (turn == Turn::Human ) ? XO::X : XO::O;
+                            const XO player = (turn == Turn::Human ) ? XO::X : XO::O;
                             play_tip = game_->findBestMoveZone(player, true).first;
                             boardCell.fillZoneWith(play_tip, player);
                             sf::Clock c;
@@ -115,7 +108,7 @@ int TwoPlayerScreen::Run(sf::RenderWindow& App)
                     }
                 case sf::Event::MouseMoved:
                     {
-                        sf::Vector2f mapped = App.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
+                        const sf::Vector2f mapped = App.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
                         if ( Tip.getGlobalBounds().contains(mapped) ) { hover = Hover::TIP;}  
                         else
                         {
@@ -144,19 +137,11 @@ int TwoPlayerScreen::Run(sf::RenderWindow& App)
             default:
                 break;
         }
-        allpha_tmp = alpha / alpha_div;
-		boardCell.setOutlineColor(sf::Color(255, 255, 255, allpha_tmp));
+        alpha_tmp = alpha / alpha_div;
+		boardCell.setOutlineColor(sf::Color(255, 255, 255, alpha_tmp));
         App.clear();
         App.draw(boardCell);
         App.draw(Tip);
-        //if ( play_tip != Zone::OUT )
-        //{
-
-        //}
-        //if ( s == Game::State::XWon || s == Game::State::OWon )
-        //{
-        //    game_->drawWinningLine(App);
-        //}
         App.display();
     }
 	return -1;

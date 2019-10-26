@@ -12,11 +12,12 @@ class MenuScreen : public cScreen
 private:
     using cScreen::NowPlaying;
 
-	int alpha_max;
-	int alpha_div;
+	static constexpr uint_fast16_t alpha_max = 255*6;
+	static constexpr uint_fast16_t alpha_div = 6;
+	void MenuScreen::init() override;
+
     Game* game_;
 public:
-    void init() override;
 	MenuScreen(Game& g);
     NowPlaying playing;
     NowPlaying wasPlaying;

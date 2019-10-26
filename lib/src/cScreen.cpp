@@ -2,6 +2,9 @@
 #include <iostream>
 
 
+void cScreen::init()
+{
+}
 int cScreen::loadFromFile(const std::string& s)
 {
 	if (!texture.loadFromFile(s))

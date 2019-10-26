@@ -64,11 +64,11 @@ class Cell : public sf::Drawable
         void setSymbolColor(const sf::Color& c);
 
     private:
-        XO xo_;
+		XO xo_ = XO::None;
         sf::RectangleShape rec_;
         sf::Text symbol_;
         sf::Font font_;
-        Zone z_;
+		Zone z_ = Zone::OUT;
 
 };
 

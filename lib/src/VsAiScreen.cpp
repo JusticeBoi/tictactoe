@@ -1,25 +1,20 @@
 #include "../inc/VsAiScreen.hpp"
 #include "Game.hpp"
 
-void VsAiScreen::init()
-{
-	alpha_max = 6 * 255;
-	alpha_div = 6;
-}
 VsAiScreen::VsAiScreen( Game& g  ): game_(&g){
-    init();
 };
 
 int VsAiScreen::Run(sf::RenderWindow& App)
 {
     using Turn = Game::Turn;
     using State = Game::State;
-	int alpha = 0;
-    int allpha_tmp = 0;
+	
+	uint_fast16_t alpha = 0;
+
     sf::Event event;
     bool Running = true;
     BoardCell& boardCell = game_->getBoardCell();
-    Game::Turn& turn = game_->getTurn();
+    Turn& turn = game_->getTurn();
 	sf::Font Font;
 	sf::Text Tip;
 	if (!Font.loadFromFile("../fonts/Inconsolata.ttf"))
@@ -51,7 +46,7 @@ int VsAiScreen::Run(sf::RenderWindow& App)
                     case sf::Event::MouseButtonPressed:
                         if (event.mouseButton.button == sf::Mouse::Left)
                         {
-                            sf::Vector2f mapped = App.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
+                            const sf::Vector2f mapped = App.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
                             Zone clickedZone = boardCell.clickedZone(mapped);
                             if ( clickedZone != Zone::OUT )
                             {
@@ -59,7 +54,7 @@ int VsAiScreen::Run(sf::RenderWindow& App)
                             }
                             else if ( Tip.getGlobalBounds().contains(mapped) )
                             {
-                                XO player = (turn == Turn::Human ) ? XO::X : XO::O;
+                                const XO player = (turn == Turn::Human ) ? XO::X : XO::O;
                                 play_tip = game_->findBestMoveZone(player, true).first;
                                 boardCell.fillZoneWith(play_tip, player);
                                 sf::Clock c;
@@ -86,7 +81,7 @@ int VsAiScreen::Run(sf::RenderWindow& App)
                     }
                 case sf::Event::MouseMoved:
                     {
-                        sf::Vector2f mapped = App.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
+                        const sf::Vector2f mapped = App.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
                         if ( Tip.getGlobalBounds().contains(mapped) ) { hover = Hover::TIP;}  
                         else
                         {
@@ -101,7 +96,7 @@ int VsAiScreen::Run(sf::RenderWindow& App)
                 game_->makeBestMove(); turn = Turn::Human;
             }
         }
-        State s = game_->isFinito();
+        const State s = game_->isFinito();
         if ( s != Game::State::NotFinished)
         {
             if ( s == Game::State::Draw )
@@ -110,7 +105,7 @@ int VsAiScreen::Run(sf::RenderWindow& App)
             }
             else 
             {
-                std::string win_msg = ( s == State::XWon ) ? "X won " : "O won";
+                const std::string win_msg = ( s == State::XWon ) ? "X won " : "O won";
                 std::cout << win_msg <<'\n';
                 sf::Clock c;
                 game_->fadeAway(App, 0.7f);
@@ -138,8 +133,8 @@ int VsAiScreen::Run(sf::RenderWindow& App)
             default:
                 break;
         }
-        allpha_tmp = alpha / alpha_div;
-		boardCell.setOutlineColor(sf::Color(255, 255, 255, allpha_tmp));
+        alpha_tmp = alpha / alpha_div;
+		boardCell.setOutlineColor(sf::Color(255, 255, 255, alpha_tmp));
         App.clear();
         App.draw(boardCell);
         App.draw(Tip);
