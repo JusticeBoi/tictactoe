@@ -24,4 +24,4 @@ Dependencies
 * CMake
 * SFML 2.5
 
-Build with CMake by pointing defining SFML_DIR to ..\lib\cmake\SFML directory.
+Build with CMake by defining SFML_DIR to ..\lib\cmake\SFML directory.
