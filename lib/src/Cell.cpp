@@ -7,7 +7,6 @@ Cell::Cell()
     xo_ = XO::None;
 
   rec_.setFillColor(sf::Color::Transparent);
-  //rec_.setOutlineColor(sf::Color::White);
   rec_.setOutlineColor(sf::Color(255,255,255,255));
   rec_.setOutlineThickness(borderThickness);
   rec_.setSize(sf::Vector2f(width, height));
@@ -32,7 +31,6 @@ bool Cell::contains(const sf::Vector2f& v) const {
 void Cell::setOutlineColor(const sf::Color& c)
 {
     rec_.setOutlineColor(c);
-    //symbol_.setFillColor(sf::Color(0,255,255,c.a));
     symbol_.setFillColor(c);
 }
 void Cell::setXO(XO x_or_o )
