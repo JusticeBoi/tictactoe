@@ -11,12 +11,12 @@ class VsAiScreen : public cScreen
     public:
     	VsAiScreen(Game& game); 
     	virtual int Run(sf::RenderWindow &App) override;
-        void init() override;
     private:
         Game* game_;
-	    int alpha_max;
-	    int alpha_div;
-        int allpha_tmp;
 
+	    static constexpr uint_fast16_t alpha_max = 255*6;
+	    static constexpr uint_fast16_t alpha_div = 6;
+
+		uint_fast16_t alpha_tmp = 0;
 };
 #endif

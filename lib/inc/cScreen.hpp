@@ -24,7 +24,7 @@ public :
     virtual int Run (sf::RenderWindow &App) = 0;
     virtual int loadFromFile (const std::string& str) ; 
     bool finished_;
-    virtual void init() = 0;
+    virtual void init();
 protected:
     
     sf::Texture texture;

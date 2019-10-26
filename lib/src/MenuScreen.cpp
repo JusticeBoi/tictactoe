@@ -3,27 +3,24 @@
 
 void MenuScreen::init()
 {
-	alpha_max = 3 * 255;
-	alpha_div = 3;
 	playing = NowPlaying::NOTHING;
 	wasPlaying = NowPlaying::NOTHING;
 }
-MenuScreen::MenuScreen(Game& g) : game_(&g)
+MenuScreen::MenuScreen(Game& g) : game_(&g), playing(NowPlaying::NOTHING), wasPlaying(NowPlaying::NOTHING)
 {
-    init();
 }
 int MenuScreen::Run(sf::RenderWindow &App)
 {
 	sf::Event Event;
 	bool Running = true;
 	int alpha = 0;
+
 	sf::Font Font;
 	sf::Text PlayTwoPlayer;
 	sf::Text PlayVsAI;
 	sf::Text Exit;
 	sf::Text Continue;
 	sf::Text ExitToMenu;
-	//int menu = 0;
 
 	if (!loadFromFile("../themes/spiral.jpg"))
 	{
@@ -84,14 +81,12 @@ int MenuScreen::Run(sf::RenderWindow &App)
                             sf::Vector2f mapped = App.mapPixelToCoords({Event.mouseButton.x, Event.mouseButton.y});
                             if ( Exit.getGlobalBounds().contains(mapped))
                             {
-                                //menu = 1;
 				        		return -1;
                             }
                             if ( playing != NowPlaying::NOTHING )
                             {
                                 if ( Continue.getGlobalBounds().contains(mapped) )
                                 {
-                                   // menu = 0;
 				        	    	playing = wasPlaying;
                                     return playing;
                                 }
@@ -104,14 +99,12 @@ int MenuScreen::Run(sf::RenderWindow &App)
                             }
                             else if ( PlayTwoPlayer.getGlobalBounds().contains(mapped) ) 
                             {
-                                    //menu = 0;
 				        	    	playing = NowPlaying::PVSP;
                                     wasPlaying = playing;
                                     return 1;
                             }
                             else if ( PlayVsAI.getGlobalBounds().contains(mapped) ) 
                             {
-                                    //menu = 0;
 				        	    	playing = NowPlaying::PVSAI;
                                     wasPlaying = playing;
                                     return 2;

@@ -7,9 +7,17 @@
 
 
 
+void BoardCell::cleanUp()
+{
+    std::fill(boardRep_.begin(), boardRep_.end(), XO::None);
+	std::for_each(board_.begin(), board_.end(), [](Cell& c) { c.setXO(XO::None); });
+    winningLine_ = sf::RectangleShape();
+    winningLine_.setOutlineColor(sf::Color::White);
+    numberOfEmpty = 9;
+}
+
 void BoardCell::init()
 {
-    //auto font = std::make_shared<sf::Font>();
     if (!font_.loadFromFile("../fonts/GlacialIndifference.otf"))
     {
         throw std::runtime_error("couldnt load font");
@@ -20,13 +28,12 @@ void BoardCell::init()
 
     auto gen = [this]()
     {
-        //static int i = 1;
-        //static int j = 1;
         Cell c; 
-        //std::cout <<"i : "<< i << " j : " << j<<'\n';
+
         c.setFont(font_);
         c.setPosition(offset + ((i-1)*Cell::width), offset + ((j-1)*Cell::height));
         c.setZone( static_cast<Zone>(3*(j-1) + i));
+
         j = ( (i % 3) ) ? j : j+1; 
         i = ( i == 3) ? 1 : i+1;
         return c;
@@ -46,33 +53,11 @@ BoardCell::BoardCell()
 
 void BoardCell::draw(sf::RenderTarget& target, sf::RenderStates /*states*/) const
 {
-    //static bool winningLineFirstTime = false;
-    //static sf::Clock c;
     std::for_each(board_.begin(), board_.end(), [&target](const Cell& c){ target.draw(c);});
     if ( winningLine_.getSize() != sf::Vector2f{0,0} )
     {
             target.draw(winningLine_);
     }
-    //    if (!winningLineFirstTime)
-    //    {
-    //        int alpha = 0; 
-    //        int alpha_max = 5*255;  
-    //        int alpha_div = 5;
-    //        while(c.getElapsedTime().asSeconds() < 0.8f )
-    //        {
-    //            while ( alpha < alpha_max)
-	//        	{
-    //                ++alpha;
-    //                winningLine_.setFillColor(sf::Color(255, 255, 255, alpha/alpha_div));
-    //                target.draw(winningLine_);
-    //            }
-    //        }
-    //        winningLineFirstTime = true;
-    //    }
-    //    else
-    //    {
-    //    }
-
 }
 
 void BoardCell::setOutlineColor(const sf::Color& c)
@@ -87,7 +72,6 @@ bool BoardCell::fillZoneWith( Zone zone, XO xOrO )
         board_[zone-1].setXO(xOrO);
         boardRep_[zone-1] = xOrO;
         --numberOfEmpty;
-        //std::cout << numberOfEmpty <<'\n';
         return 1;
     }
     else
@@ -137,42 +121,21 @@ const std::array<XO,9>& BoardCell::getBoardRep() const
 {
     return boardRep_;
 }
-XO BoardCell::hasWonNew() const
-{
-    #ifdef WITH_FUNCTION_UTILITIES
-    SCOPED_FUNCTION_START;
-    #endif
-    static unsigned wins[8][3] = {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
-    int i;
-    for(i = 0; i < 8; ++i) {
-        if(boardRep_[wins[i][0]] != XO::None &&
-           boardRep_[wins[i][0]] == boardRep_[wins[i][1]] &&
-           boardRep_[wins[i][0]] == boardRep_[wins[i][2]])
-            return boardRep_[wins[i][2]];
-    }
-    return XO::None;
-    #ifdef WITH_FUNCTION_UTILITIES
-    SCOPED_FUNCTION_END;
-    #endif
-}
-
 void BoardCell::drawWinningLine( const threeInt& tup )
 {
-    //std::cout <<"winning zone : \n";
-    int from = std::get<0>(tup);
-    int to = std::get<2>(tup);
-    //std::cout << from<< '\t';
-    //std::cout << std::get<1>(tup) << '\t';
-    //std::cout << to << '\t';
-    Cell fromCell = board_[from];
-    Cell toCell = board_[to];
-    sf::Vector2f fromPos = fromCell.getPosition();
-    sf::Vector2f toPos = toCell.getPosition();
+    const int from = std::get<0>(tup);
+    const int to = std::get<2>(tup);
 
-    sf::Vector2f midPointFrom = fromPos + sf::Vector2f{fromCell.width/2, fromCell.height/2};
-    sf::Vector2f midPointTo = toPos + sf::Vector2f{toCell.width/2, toCell.height/2};
+    const Cell fromCell = board_[from];
+    const Cell toCell = board_[to];
 
-    float size = std::sqrt(std::pow(midPointFrom.y - midPointTo.y,2) + std::pow(midPointFrom.x - midPointTo.x,2));
+    const sf::Vector2f fromPos = fromCell.getPosition();
+    const sf::Vector2f toPos = toCell.getPosition();
+
+    const sf::Vector2f midPointFrom = fromPos + sf::Vector2f{fromCell.width/2, fromCell.height/2};
+    const sf::Vector2f midPointTo = toPos + sf::Vector2f{toCell.width/2, toCell.height/2};
+
+    const float size = std::sqrt(std::pow(midPointFrom.y - midPointTo.y,2) + std::pow(midPointFrom.x - midPointTo.x,2));
     winningLine_ = sf::RectangleShape(sf::Vector2f(size, 5.f));
     if ( (from == 0 && to == 6) || (from == 1 && to == 7) || (from == 2 && to == 8) )
     {
@@ -185,20 +148,18 @@ void BoardCell::drawWinningLine( const threeInt& tup )
 }
 std::pair<XO, BoardCell::threeInt> BoardCell::hasWon(const std::array<XO,9>& board) 
 {
-    static int wins[8][3] = {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
-    int i;
-    for(i = 0; i < 8; ++i) {
+    static const int wins[8][3] = {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
+    for(int i = 0; i < 8; ++i) {
         if(board[wins[i][0]] != XO::None &&
            board[wins[i][0]] == board[wins[i][1]] &&
            board[wins[i][0]] == board[wins[i][2]])
             return std::make_pair(board[wins[i][2]], threeInt{wins[i][0], wins[i][1], wins[i][2]});
     }
-    auto max = std::numeric_limits<int>::max();
+    static const int max = std::numeric_limits<int>::max();
     return std::make_pair(XO::None, threeInt{max, max, max});
 }
 
 void BoardCell::cleanUpForNextRound()
 {
-    init();
-    numberOfEmpty = 9;
+	cleanUp();
 }
