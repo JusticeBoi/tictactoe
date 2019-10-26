@@ -15,3 +15,13 @@ Probably not many.
 ## Installing
 
 ### Windows
+
+Release page has compiled binaries for windows.
+
+### Linux
+
+Dependencies
+* CMake
+* SFML 2.5
+
+Build with CMake by pointing defining SFML_DIR to ..\lib\cmake\SFML directory.
