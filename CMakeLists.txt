@@ -36,7 +36,6 @@ configure_file(
   "${PROJECT_SOURCE_DIR}/lib/inc/config.h"
   )
 
-MESSAGE(${CMAKE_PREFIX_PATH})
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
 set(EXECUTABLE_NAME "tictactoe")
