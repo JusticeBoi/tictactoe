@@ -54,7 +54,7 @@ file( GLOB LIBRARY_HEADER_FILES lib/inc/*.hpp )
 add_library(tictactoelib SHARED ${LIBRARY_SOURCE_FILES} ${LIBRARY_HEADER_FILES} )
 target_link_libraries(tictactoelib sfml-graphics  sfml-window  sfml-audio )
 
-add_executable(${EXECUTABLE_NAME} driver/main.cpp ${LIBRARY_SOURCE_FILES})
+add_executable(${EXECUTABLE_NAME} driver/main.cpp )
 target_link_libraries(${EXECUTABLE_NAME} tictactoelib  )
 
 if(WIN32)

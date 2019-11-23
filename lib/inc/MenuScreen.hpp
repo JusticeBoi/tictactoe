@@ -14,7 +14,7 @@ private:
 
 	static constexpr uint_fast16_t alpha_max = 255*6;
 	static constexpr uint_fast16_t alpha_div = 6;
-	void MenuScreen::init() override;
+	void init() override;
 
     Game* game_;
 public:
