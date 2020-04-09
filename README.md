@@ -25,3 +25,6 @@ Dependencies
 * SFML 2.5
 
 Build with CMake by defining SFML_DIR to ..\lib\cmake\SFML directory.
+
+### License
+MIT
