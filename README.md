@@ -18,7 +18,7 @@ Probably not many.
 
 Release page has compiled binaries for windows.
 
-### Linux
+### GNU/Linux
 
 Dependencies
 * CMake
